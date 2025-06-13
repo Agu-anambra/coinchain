@@ -4,6 +4,8 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner"
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 const ibmPlexSans = localFont({
   src: [
@@ -26,9 +28,11 @@ export const metadata: Metadata = {
   description: "Coinchain is the easiest, safest, and fastest way to buy & sell crypto asset exchange.",
 };
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth();
   return (
     <html lang="en">
+      <SessionProvider session={session}>
       <body
         className={`${ibmPlexSans.className} ${bebasNeue.variable} antialiased`}
       >
@@ -37,6 +41,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
         <Toaster />
         {/* Add any additional components or scripts here */}
       </body>
+      </SessionProvider>
     </html>
   );
 };

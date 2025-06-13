@@ -14,11 +14,11 @@ const Home = async () => {
   <>
     <Landing />
 
-    <InvestmentPlans
+    {/* <InvestmentPlans
       title="Investment Plans"
       plans={investmentPlans}
       containerClassName="mt-28"
-    />
+    /> */}
   </>
   )
 }
