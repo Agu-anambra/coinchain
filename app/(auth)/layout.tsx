@@ -1,7 +1,16 @@
+import { auth } from "@/auth";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
-const layout = ({ children }: { children: ReactNode }) => {
+const layout = async ({ children }: { children: ReactNode }) => {
+
+  const session = await auth();
+
+  if (session) {
+    // If the user is already authenticated, redirect them to the home page
+    redirect("/");
+  }
   return (
     <main className="auth-container">
       <section className="auth-form">

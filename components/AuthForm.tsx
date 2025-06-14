@@ -13,7 +13,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -51,18 +50,17 @@ const AuthForm = <T extends FieldValues>({
   const handleSubmit: SubmitHandler<T> = async (data) => {
     const result = await onSubmit(data);
     if (result.success) {
-      // toast("Success", { description: isSignIn ? "You have signed in successfully!" : "You have successfully signed upu!" })
-      toast.success(
-        isSignIn
-          ? "You have signed in successfully!"
-          : "You have successfully signed up!"
-      );
+      toast("Success", { description: isSignIn ? "You have signed in successfully!" : "You have successfully signed upu!" })
+      // toast.success(
+      //   isSignIn
+      //     ? "You have signed in successfully!"
+      //     : "You have successfully signed up!"
+      // );
       router.push("/");
       return;
     } else {
-      toast.error(result.error || "An error occurred. Please try again.");
-      // toast(`Error ${isSignIn ? "Signing In": "signing up!"}`, { description: result.error ?? "An error occurred. Please try again."})
-      toast.error(isSignIn ? "Error Signing In!" : "Error signing up!");
+      // toast.error(result.error || "An error occurred. Please try again.");
+      toast(`Error ${isSignIn ? "Signing In": "signing up!"}`, { description: result.error ?? "An error occurred. Please try again."})
     }
   };
   return (
@@ -112,7 +110,7 @@ const AuthForm = <T extends FieldValues>({
               )}
             />
           ))}
-          <Button type="submit" className="form-btn">
+          <Button type="submit" className="form-btn cursor-pointer">
             {isSignIn ? "Sign In" : "Sign Up"}
           </Button>
         </form>

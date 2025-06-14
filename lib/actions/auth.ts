@@ -3,7 +3,6 @@ import { db } from '@/database/drizzle';
 import { users } from '@/database/schema';
 import { hash } from 'bcryptjs';
 import { eq } from 'drizzle-orm';
-import { cookies } from 'next/headers';
 import { signIn } from '@/auth'
 
 
@@ -36,9 +35,6 @@ export const signUp = async (params: AuthCredentials) => {
 
     if (existingUser.length > 0) {
         return { success: false, message: 'User already exists with this email' };
-    }
-    if (existingUser) {
-        throw new Error('User already exists with this email');
     }
 
     const hashedPassword = await hash(password, 10);
