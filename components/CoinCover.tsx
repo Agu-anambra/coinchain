@@ -19,7 +19,7 @@ const CoinCover = ({
   className,
   variant = "regular",
   // coverColor = "#012B48",
-  coverImage = "/assets/images/COINCHAIN.png",
+  coverImage,
 }: props) => {
   return (
     <div

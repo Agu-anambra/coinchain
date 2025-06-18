@@ -5,7 +5,7 @@ import useScrollReveal from "@/hooks/useScrollReveal";
 import { Button } from "./ui/button";
 import CoinCover from "./CoinCover";
 
-export default function HomePage({cover}:Price) {
+export default function HomePage({ cover }: { cover: string }) {
   // 🔁 Initialize scroll animation
   useScrollReveal();
 
@@ -27,7 +27,7 @@ export default function HomePage({cover}:Price) {
             easiest, safest, and fastest way to buy & sell crypto asset
             exchange.
           </p>
-          <Button className="relative bg-blue-600 text-white font-bold py-3 px-8 rounded-full overflow-hidden z-10 inline-block group book-overview_btn">
+          <Button className="relative bg-blue-600 capitalize text-white font-bold py-3 px-8 rounded-full overflow-hidden z-10 inline-block group book-overview_btn">
             Get started now
             <span className="absolute inset-0 z-[-1] bg-gradient-to-r from-white/10 via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-transform duration-500"></span>
           </Button>

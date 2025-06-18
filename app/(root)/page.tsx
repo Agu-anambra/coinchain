@@ -7,12 +7,12 @@ import {db} from "@/database/drizzle"
 import {users} from "@/database/schema"
 
 const Home = async () => {
-
+const cover =  "/assets/images/COINCHAIN.png"
   // const result = await db.select().from(users);
   // console.log(JSON.stringify(result, null, 2))
   return(
   <>
-    <Landing />
+    <Landing cover={cover}/>
 
     {/* <InvestmentPlans
       title="Investment Plans"
