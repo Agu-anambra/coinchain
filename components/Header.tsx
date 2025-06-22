@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 const Header = () => {
   return (
-    <header className="my-5 flex justify-between gap-5">
+    <header className="my-2 md:my-5 flex justify-between gap-5">
       <Link
         href="/"
         className="text-white text-2xl font-bold flex items-center gap-2"
