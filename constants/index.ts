@@ -23,16 +23,16 @@ export const adminSideBarLinks = [
     route: "/admin/users",
     text: "All Users",
   },
-  // {
-  //   img: "/icons/admin/book.svg",
-  //   route: "/admin/books",
-  //   text: "All Books",
-  // },
-  // {
-  //   img: "/icons/admin/bookmark.svg",
-  //   route: "/admin/book-requests",
-  //   text: "Borrow Requests",
-  // },
+  {
+    img: "/icons/admin/book.svg",
+    route: "/admin/books",
+    text: "All Books",
+  },
+  {
+    img: "/icons/admin/bookmark.svg",
+    route: "/admin/book-requests",
+    text: "Borrow Requests",
+  },
   {
     img: "/icons/admin/user.svg",
     route: "/admin/account-requests",
@@ -43,7 +43,6 @@ export const adminSideBarLinks = [
 export const FIELD_NAMES = {
   fullName: "Full name",
   email: "Email",
-  // universityId: "University ID Number",
   password: "Password",
   IDCard: "Upload Your Proof of Identification",
 };
@@ -51,7 +50,6 @@ export const FIELD_NAMES = {
 export const FIELD_TYPES = {
   fullName: "text",
   email: "email",
-  // universityId: "number",
   password: "password",
 };
 
@@ -86,3 +84,4 @@ export const investmentPlans = [
     duration: "1 month",
   }
 ];
+

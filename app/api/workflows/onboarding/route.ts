@@ -46,7 +46,7 @@ export const { POST } = serve<InitialData>(async (context) => {
     await sendEmail({
       email, 
       subject: 'Welcome to Coinchain', 
-      message: `Hi ${fullName},it is good to have you on board!` 
+      message: `Hi ${fullName}, it is good to have you on board!` 
     })
   })
 
