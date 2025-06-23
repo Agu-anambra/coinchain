@@ -1,9 +1,15 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
-      "source": "/(.*)",
-      "has": [{ "type": "host", "value": "coinchain.tech" }],
-      "destination": "https://www.coinchain.tech/:1",
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "coinchain.tech"
+        }
+      ],
+      "destination": "https://www.coinchain.tech/:path*",
       "permanent": true
     }
   ]
