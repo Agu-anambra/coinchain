@@ -9,6 +9,7 @@ import ratelimit from '../ratelimit';
 import { redirect } from 'next/navigation';
 import { workflowClient } from '../workflow';
 import config from '../config';
+import { revalidatePath } from 'next/cache';
 
 
 export const signInWithCredentials = async (params: Pick<AuthCredentials, "email" | "password">) => {
@@ -78,4 +79,20 @@ export const signUp = async (params: AuthCredentials) => {
 
 
 
+}
+
+export async function updateUserRole(formData: FormData) {
+  const userId = formData.get('userId') as string;
+  if (!userId) return;
+  try {
+    await db.update(users)
+      .set({ role: 'ADMIN' })
+      .where(eq(users.id, userId));
+
+    revalidatePath('/admin/users'); // to refresh the page data
+    // return { success: true };
+  } catch (error) {
+    console.error('Error promoting user to admin:', error);
+    // return { success: false, message: 'Failed to update user role' };
+  }
 }

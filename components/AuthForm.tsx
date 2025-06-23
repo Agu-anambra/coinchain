@@ -24,7 +24,7 @@ import Link from "next/link";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-// import { useRouter } from "next/router";
+import { useState } from "react";
 
 interface Props<T extends FieldValues> {
   schema: ZodType<T, any, T>;
@@ -46,16 +46,16 @@ const AuthForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   // 2. Define a submit handler.
   const handleSubmit: SubmitHandler<T> = async (data) => {
+  setIsSubmitting(true);
     const result = await onSubmit(data);
+  setIsSubmitting(false);
     if (result.success) {
-      toast("Success", { description: isSignIn ? "You have signed in successfully!" : "You have successfully signed upu!" })
-      // toast.success(
-      //   isSignIn
-      //     ? "You have signed in successfully!"
-      //     : "You have successfully signed up!"
-      // );
+      toast("Success", { description: isSignIn ? "You have signed in successfully!" : "You have successfully signed up!" })
+      
       router.push("/");
       return;
     } else {
@@ -111,7 +111,8 @@ const AuthForm = <T extends FieldValues>({
             />
           ))}
           <Button type="submit" className="form-btn cursor-pointer">
-            {isSignIn ? "Sign In" : "Sign Up"}
+            {/* {isSignIn ? "Sign In" : "Sign Up"} */}
+            {isSubmitting ? "Loading..." : isSignIn ? "Sign In" : "Sign Up"}
           </Button>
         </form>
       </Form>
