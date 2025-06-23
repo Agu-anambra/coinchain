@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "coinchain.tech" }],
+      "destination": "https://www.coinchain.tech/:1",
+      "permanent": true
+    }
+  ]
+}
