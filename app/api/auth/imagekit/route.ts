@@ -1,17 +1,55 @@
+import { NextResponse } from "next/server";
 import config from "@/lib/config";
 import ImageKit from "imagekit";
-import { NextResponse } from "next/server";
 
-const {env:{imageKit:{publicKey, privateKey, urlEndpoint}}} = config;
+const {
+  env: {
+    imageKit: { publicKey, privateKey, urlEndpoint },
+  },
+} = config;
 
-const imagekit = new ImageKit({
-  publicKey,
-  privateKey,
-  urlEndpoint,
-});
+const imagekit = new ImageKit({ publicKey, privateKey, urlEndpoint });
 
-export async function GET() {
+const allowedOrigins = [
+  "https://www.coinchain.tech",
+  "https://coinchain.tech",
+];
 
-    return NextResponse.json(imagekit.getAuthenticationParameters())
+function getCorsOrigin(request: Request) {
+  const origin = request.headers.get("origin");
+  return allowedOrigins.includes(origin || "") ? origin : null;
+}
 
+export async function GET(request: Request) {
+  const origin = getCorsOrigin(request);
+
+  const headers = new Headers();
+  headers.set("Access-Control-Allow-Methods", "GET");
+  headers.set("Access-Control-Allow-Headers", "Content-Type");
+
+  if (origin) {
+    headers.set("Access-Control-Allow-Origin", origin);
+  }
+
+  const body = imagekit.getAuthenticationParameters();
+  return new NextResponse(JSON.stringify(body), {
+    status: 200,
+    headers,
+  });
+}
+
+export async function OPTIONS(request: Request) {
+  const origin = getCorsOrigin(request);
+  const headers = new Headers();
+  headers.set("Access-Control-Allow-Methods", "GET");
+  headers.set("Access-Control-Allow-Headers", "Content-Type");
+
+  if (origin) {
+    headers.set("Access-Control-Allow-Origin", origin);
+  }
+
+  return new NextResponse(null, {
+    status: 204,
+    headers,
+  });
 }
