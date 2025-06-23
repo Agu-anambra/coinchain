@@ -17,42 +17,46 @@ const allowedOrigins = [
 
 function getCorsOrigin(request: Request) {
   const origin = request.headers.get("origin");
-  return allowedOrigins.includes(origin || "") ? origin : null;
+  return allowedOrigins.includes(origin ?? "") ? origin : null;
 }
 
 export async function GET(request: Request) {
-  const origin = request.headers.get("origin");
-  console.log("CORS Request Origin:", origin);
+  const origin = getCorsOrigin(request);
 
-  const headers = new Headers();
-  if (origin === "https://www.coinchain.tech" || origin === "https://coinchain.tech") {
+  const headers = new Headers({
+    "Access-Control-Allow-Methods": "GET",
+    "Access-Control-Allow-Headers": "Content-Type",
+  });
+
+  if (origin) {
     headers.set("Access-Control-Allow-Origin", origin);
   }
 
-  headers.set("Access-Control-Allow-Methods", "GET");
-  headers.set("Access-Control-Allow-Headers", "Content-Type");
+  const res = new NextResponse(
+    JSON.stringify(imagekit.getAuthenticationParameters()),
+    {
+      status: 200,
+      headers, // ✅ all headers passed here
+    }
+  );
 
-  const response = new NextResponse(JSON.stringify(imagekit.getAuthenticationParameters()), {
-    status: 200,
-    headers,
-  });
-
-  console.log("Response headers:", Object.fromEntries(response.headers.entries()));
-  return response;
+  return res;
 }
-
 
 export async function OPTIONS(request: Request) {
   const origin = getCorsOrigin(request);
-  const headers = new Headers();
-  headers.set("Access-Control-Allow-Methods", "GET");
-  headers.set("Access-Control-Allow-Headers", "Content-Type");
+
+  const headers = new Headers({
+    "Access-Control-Allow-Methods": "GET",
+    "Access-Control-Allow-Headers": "Content-Type",
+  });
+
   if (origin) {
     headers.set("Access-Control-Allow-Origin", origin);
   }
 
   return new NextResponse(null, {
     status: 204,
-    headers,
+    headers, // ✅ pass headers here too
   });
 }
