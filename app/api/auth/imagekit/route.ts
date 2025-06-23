@@ -21,21 +21,26 @@ function getCorsOrigin(request: Request) {
 }
 
 export async function GET(request: Request) {
-  const origin = getCorsOrigin(request);
+  const origin = request.headers.get("origin");
+  console.log("CORS Request Origin:", origin);
 
   const headers = new Headers();
-  headers.set("Access-Control-Allow-Methods", "GET");
-  headers.set("Access-Control-Allow-Headers", "Content-Type");
-  if (origin) {
+  if (origin === "https://www.coinchain.tech" || origin === "https://coinchain.tech") {
     headers.set("Access-Control-Allow-Origin", origin);
   }
 
-  const body = imagekit.getAuthenticationParameters();
-  return new NextResponse(JSON.stringify(body), {
+  headers.set("Access-Control-Allow-Methods", "GET");
+  headers.set("Access-Control-Allow-Headers", "Content-Type");
+
+  const response = new NextResponse(JSON.stringify(imagekit.getAuthenticationParameters()), {
     status: 200,
     headers,
   });
+
+  console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+  return response;
 }
+
 
 export async function OPTIONS(request: Request) {
   const origin = getCorsOrigin(request);
