@@ -26,7 +26,6 @@ export async function GET(request: Request) {
   const headers = new Headers();
   headers.set("Access-Control-Allow-Methods", "GET");
   headers.set("Access-Control-Allow-Headers", "Content-Type");
-
   if (origin) {
     headers.set("Access-Control-Allow-Origin", origin);
   }
@@ -43,7 +42,6 @@ export async function OPTIONS(request: Request) {
   const headers = new Headers();
   headers.set("Access-Control-Allow-Methods", "GET");
   headers.set("Access-Control-Allow-Headers", "Content-Type");
-
   if (origin) {
     headers.set("Access-Control-Allow-Origin", origin);
   }
