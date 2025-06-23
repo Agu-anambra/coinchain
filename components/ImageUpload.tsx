@@ -63,7 +63,7 @@ const ImageUpload = ({onFileChange}:{onFileChange:(filePath:string)=>void}) => {
         ref={IKUploadRef}
         onError={onError}
         onSuccess={onSuccess}
-        fileName="test-image.jpg"
+        fileName="userID-image.jpg"
         folder="/uploads"
       />
       <button className="upload-btn cursor-pointer" onClick={(e) => {
