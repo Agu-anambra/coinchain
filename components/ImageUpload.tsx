@@ -42,13 +42,13 @@ const ImageUpload = ({onFileChange}:{onFileChange:(filePath:string)=>void}) => {
   const [file, setFile] = useState<{ filePath: string } | null>(null);
 
   const onError = (error: any) => {
-    toast("ID upload failed.", { description: 'Your ID could not be uploaded. Please try again!' })
+    toast.error("ID upload failed.", { description: 'Your ID could not be uploaded. Please try again!' })
     console.error("Upload failed:", error);
   };
   const onSuccess = (res: any) => {
     setFile(res)
     onFileChange(res.filePath);
-    toast("ID uploaded successfully.", { description: `${res.filePath} uploaded successfully!` })
+    toast.success("ID uploaded successfully.", { description: `${res.filePath} uploaded successfully!` })
     // toast({
     //       title: "Scheduled: Catch up",
     //       description: "Friday, February 10, 2023 at 5:57 PM",

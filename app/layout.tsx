@@ -6,6 +6,8 @@ import { ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner"
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import 'sonner'; 
+
 
 const ibmPlexSans = localFont({
   src: [
@@ -38,7 +40,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
       >
         {children}
 
-        <Toaster />
+        <Toaster richColors />
         {/* Add any additional components or scripts here */}
       </body>
       </SessionProvider>

@@ -54,13 +54,13 @@ const AuthForm = <T extends FieldValues>({
     const result = await onSubmit(data);
   setIsSubmitting(false);
     if (result.success) {
-      toast("Success", { description: isSignIn ? "You have signed in successfully!" : "You have successfully signed up!" })
+      toast.success("Success", { description: isSignIn ? "You have signed in successfully!" : "You have successfully signed up!" })
       
       router.push("/");
       return;
     } else {
       // toast.error(result.error || "An error occurred. Please try again.");
-      toast(`Error ${isSignIn ? "Signing In": "signing up!"}`, { description: result.error ?? "An error occurred. Please try again."})
+      toast.error(`Error ${isSignIn ? "Signing In": "signing up!"}`, { description: result.error ?? "An error occurred. Please try again."})
     }
   };
   return (
