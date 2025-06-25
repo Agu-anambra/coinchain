@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
@@ -39,12 +40,15 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       .where(eq(users.id, session.user.id));
   });
   return (
-    <main className="root-container">
-      <div className="mx-auto max-w-7xl">
-        <Header />
-        <div className="mt-20 pb-20">{children}</div>
-      </div>
-    </main>
+    <>
+      <main className="root-container">
+        <div className="mx-auto max-w-7xl">
+          <Header />
+          <div className="mt-20">{children}</div>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 };
 

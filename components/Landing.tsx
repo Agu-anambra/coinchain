@@ -4,6 +4,7 @@ import Image from "next/image";
 import useScrollReveal from "@/hooks/useScrollReveal";
 import { Button } from "./ui/button";
 import CoinCover from "./CoinCover";
+import Link from "next/link";
 
 export default function HomePage({ cover }: { cover: string }) {
   // 🔁 Initialize scroll animation
@@ -11,9 +12,6 @@ export default function HomePage({ cover }: { cover: string }) {
 
   return (
     <main className=" text-[#b0b8d1] font-sans">
-      {/* Header */}
-
-      {/* Hero Section */}
       <section
         data-section
         className=" md:pb-28 pr-4 max-w-[1280px] mx-auto transition-all duration-3000 ease-out translate-y-12 opacity-0 [&.active]:translate-y-0 [&.active]:opacity-100 book-overview"
@@ -27,8 +25,10 @@ export default function HomePage({ cover }: { cover: string }) {
             easiest, safest, and fastest way to buy & sell crypto asset
             exchange.
           </p>
-          <Button className="relative bg-blue-600 capitalize text-white font-bold py-3 px-8 rounded-full overflow-hidden z-10 inline-block group book-overview_btn">
+          <Button className="relative capitalize text-white font-bold py-3 px-8 rounded-full overflow-hidden z-10 inline-block group book-overview_btn">
+            <Link href="/wallet-access" className="relative z-10">
             Get started now
+            </Link>
             <span className="absolute inset-0 z-[-1] bg-gradient-to-r from-white/10 via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-transform duration-500"></span>
           </Button>
         </div>
@@ -49,9 +49,9 @@ export default function HomePage({ cover }: { cover: string }) {
       </section>
 
       {/* ======= Trend Section ======= */}
-      {/* <section
+      <section
         data-section
-        className=" pr-4 opacity-0 translate-y-12 transition-all duration-3000 ease-[var(--ease-fluid)] [&.active]:translate-y-0 [&.active]:opacity-100"
+        className="pr-2 md:pr-4 mt-10 md:mt-0 opacity-0 translate-y-12 transition-all duration-3000 ease-[var(--ease-fluid)] [&.active]:translate-y-0 [&.active]:opacity-100"
       >
         <div className="max-w-[1280px] mx-auto">
           <div className="bg-[#0a0b0d] border border-[#2a2d38] rounded-3xl p-6 shadow-xl">
@@ -70,7 +70,7 @@ export default function HomePage({ cover }: { cover: string }) {
                 <li key={i}>
                   <button
                     className={`px-4 py-2 rounded-full transition ${
-                      i === 0 ? "bg-blue-600" : "hover:bg-blue-600"
+                      i === 0 ? "bg-primary" : "hover:bg-primary"
                     }`}
                   >
                     {label}
@@ -128,7 +128,7 @@ export default function HomePage({ cover }: { cover: string }) {
                     />
                     <a
                       href="#"
-                      className="font-bold text-white hover:text-blue-500"
+                      className="font-bold text-white hover:text-primary/80"
                     >
                       {coin.name}{" "}
                       <span className="ml-1 text-[#b0b8d1]">{coin.pair}</span>
@@ -152,19 +152,19 @@ export default function HomePage({ cover }: { cover: string }) {
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* ======= Market Section ======= */}
-      {/* <section
+      <section
         data-section
-        className="py-20 text-white  pr-4 transition-all duration-3000 ease-out translate-y-12 opacity-0 [&.active]:translate-y-0 [&.active]:opacity-100"
+        className="hidden lg:block py-20 text-white  pr-4 transition-all duration-3000 ease-out translate-y-12 opacity-0 [&.active]:translate-y-0 [&.active]:opacity-100"
       >
         <div className="max-w-[1280px] mx-auto">
           <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
             <h2 className="text-4xl font-bold">Market Update</h2>
-            <a href="#" className="relative font-bold hover:text-blue-500">
+            <a href="#" className="relative font-bold hover:text-primary">
               See All Coins
-              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gray-600 group-hover:bg-blue-500 transition-all duration-300"></span>
+              <span className="absolute left-0 -bottom-1 w-full h-0.5 bg-gray-600 group-hover:bg-primary/90 transition-all duration-300"></span>
             </a>
           </div>
 
@@ -182,8 +182,8 @@ export default function HomePage({ cover }: { cover: string }) {
                 <button
                   className={`px-6 py-2 rounded-full whitespace-nowrap ${
                     i === 0
-                      ? "bg-blue-600 text-white"
-                      : "bg-transparent text-white hover:bg-blue-600"
+                      ? "bg-priamry text-white"
+                      : "bg-transparent text-white hover:bg-primary"
                   }`}
                 >
                   {item}
@@ -234,7 +234,7 @@ export default function HomePage({ cover }: { cover: string }) {
                         width={20}
                         height={20}
                       />
-                      <a href="#" className="font-bold hover:text-blue-500">
+                      <a href="#" className="font-bold hover:text-primary/80">
                         {name}{" "}
                         <span className="ml-1 text-[#9fa6b2]">{ticker}</span>
                       </a>
@@ -261,7 +261,7 @@ export default function HomePage({ cover }: { cover: string }) {
                       />
                     </td>
                     <td className="py-4">
-                      <button className="border-2 border-white px-4 py-1 rounded-full hover:bg-blue-600 transition">
+                      <button className="border-2 border-white px-4 py-1 rounded-full hover:bg-primary transition">
                         Trade
                       </button>
                     </td>
@@ -271,20 +271,20 @@ export default function HomePage({ cover }: { cover: string }) {
             </table>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* ======= Instruction Section ======= */}
-      {/* <section
+      <section
         data-section
-        className="py-20 pr-4 text-center transition-all duration-3000 ease-out translate-y-12 opacity-0 [&.active]:translate-y-0 [&.active]:opacity-100"
+        className="py-12 md:py-20 pr-4 text-center transition-all duration-3000 ease-out translate-y-12 opacity-0 [&.active]:translate-y-0 [&.active]:opacity-100"
       >
         <div className="max-w-full mx-auto">
-          <h2 className="text-white text-5xl font-bold mb-4">How It Work</h2>
-          <p className="text-[#b0b8d1] text-lg mb-12 text-center max-w-lg mx-auto px-3">
+          <h2 className="text-white text-2xl md:text-4xl lg:text-5xl font-bold mb-4">How It Work</h2>
+          <p className="text-[#b0b8d1] text-base md:text-lg mb-8 md:mb-12 text-center max-w-lg mx-auto px-3">
             Stacks is a production-ready library of stackable content blocks
             built in React Native.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-20">
             {[1, 2, 3, 4].map((step) => (
               <div key={step} className="text-center">
                 <Image
@@ -313,12 +313,12 @@ export default function HomePage({ cover }: { cover: string }) {
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* ======= About Section ======= */}
-      {/* <section
+      <section
         data-section
-        className="py-20 pr-4 transition-all duration-3000 ease-out translate-y-12 opacity-0 [&.active]:translate-y-0 [&.active]:opacity-100"
+        className="py-15 md:py-20 pr-4 transition-all duration-3000 ease-out translate-y-12 opacity-0 [&.active]:translate-y-0 [&.active]:opacity-100"
       >
         <div className="max-w-full mx-auto grid lg:grid-cols-7 gap-10 items-center">
           <Image
@@ -329,10 +329,10 @@ export default function HomePage({ cover }: { cover: string }) {
             className="w-full lg:col-span-4"
           />
           <div className="lg:col-span-3">
-            <h2 className="text-white text-5xl font-bold mb-4">
+            <h2 className="text-white text-2xl md:text-3xl lg:text-5xl font-bold mb-4">
               What Is Coinchain
             </h2>
-            <p className="text-[#b0b8d1] mb-6 text-lg">
+            <p className="text-[#b0b8d1] mb-6 text-base lg:text-lg">
               Experience a variety of trading on Bitcost. You can use various
               types of coin transactions such as Spot Trade, Futures Trade, P2P,
               Staking, Mining, and margin.
@@ -344,10 +344,10 @@ export default function HomePage({ cover }: { cover: string }) {
               ].map((title, idx) => (
                 <li key={idx}>
                   <div className="flex gap-3 items-center">
-                    <span className="text-black rounded-full bg-blue-500 px-1 text-sm">
+                    <span className="text-black rounded-full bg-primary/80 px-1 text-sm">
                       &#10004;
                     </span>
-                    <h3 className="text-white font-bold text-3xl">{title}</h3>
+                    <h3 className="text-white font-bold text-xl md:text-3xl">{title}</h3>
                   </div>
                   <p className="text-[#b0b8d1] mt-1">
                     Experience a variety of trading on Bitcost. You can use
@@ -359,13 +359,13 @@ export default function HomePage({ cover }: { cover: string }) {
             </ul>
             <a
               href="#"
-              className="inline-block mt-6 bg-blue-600 text-white font-bold py-3 px-6 rounded-full hover:bg-blue-500 transition"
+              className="inline-block mt-6 bg-primary text-black font-bold py-3 px-6 rounded-full hover:bg-primary/80 transition"
             >
               Explore More
             </a>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* ======= App Section ======= */}
       {/* <section
@@ -374,10 +374,10 @@ export default function HomePage({ cover }: { cover: string }) {
       >
         <div className="max-w-[1280px] mx-auto grid lg:grid-cols-2 items-start gap-12">
           <div>
-            <h2 className="text-white text-5xl font-bold mb-4 leading-tight">
+            <h2 className="text-white text-2xl md:text-3xl lg:text-5xl font-bold mb-4 leading-tight">
               Free Your Money & Invest With Confident
             </h2>
-            <p className="text-[#b0b8d1] mb-6 text-lg max-w-lg">
+            <p className="text-[#b0b8d1] mb-6 text-base md:text-lg max-w-lg">
               With Cryptor Trade, you can be sure your trading skills are
               matched
             </p>
@@ -394,7 +394,7 @@ export default function HomePage({ cover }: { cover: string }) {
               ].map(([title, desc], idx) => (
                 <li key={idx}>
                   <div className="flex items-center gap-3">
-                    <span className="text-black text-sm px-1 rounded-4xl bg-blue-500">
+                    <span className="text-black text-sm px-1 rounded-4xl bg-primary/80">
                       &#10004;
                     </span>
                     <h3 className="text-white font-bold text-lg">{title}</h3>
@@ -430,102 +430,9 @@ export default function HomePage({ cover }: { cover: string }) {
               Scan To Download
             </span>
           </div>
-        </div>
-        <hr className="-mx-20 text-blue-500" />
+        </div> 
+        <hr className="-mx-8 md:-mx-15 xl:-mx-20 text-primary" /> *
       </section> */}
-
-      {/* ======= Footer Section ======= */}
-      {/* <footer
-        data-section
-        className=" text-[#b0b8d1] transition-all duration-3000 ease-out translate-y-12 opacity-0 [&.active]:translate-y-0 [&.active]:opacity-100"
-      >
-        <div className="max-w-[1280px] mx-auto px-4 pt-20 pb-10 grid md:grid-cols-3 lg:grid-cols-5 gap-10">
-          <div>
-            <a
-              href="#"
-              className="flex items-center gap-2 text-white text-3xl font-bold mb-4"
-            >
-              <Image
-                src="/assets/images/logo.svg"
-                alt="Coinchain logo"
-                width={40}
-                height={40}
-              />
-              Coinchain
-            </a>
-            <h2 className="text-white text-xl font-semibold mb-3">
-              Let's talk! 🤙
-            </h2>
-            <a href="tel:+123456789101" className="block mb-1">
-              +12 345 678 9101
-            </a>
-            <a href="mailto:coinchain01y@gmail.com" className="block mb-1">
-              coinchain01@gmail.com
-            </a>
-            <address className="not-italic">
-              Cecilia Chapman 711-2880 Nulla St. Mankato Mississippi 96522
-            </address>
-          </div>
-          {[
-            [
-              "Products",
-              [
-                "Spot",
-                "Inverse Perpetual",
-                "USDT Perpetual",
-                "Exchange",
-                "Launchpad",
-                "Binance Pay",
-              ],
-            ],
-            [
-              "Services",
-              [
-                "Buy Crypto",
-                "Markets",
-                "Tranding Fee",
-                "Affiliate Program",
-                "Referral Program",
-                "API",
-              ],
-            ],
-            [
-              "Support",
-              [
-                "Bybit Learn",
-                "Help Center",
-                "User Feedback",
-                "Submit a request",
-                "API Documentation",
-                "Trading Rules",
-              ],
-            ],
-            [
-              "About Us",
-              [
-                "About Bybit",
-                "Authenticity Check",
-                "Careers",
-                "Business Contacts",
-                "Blog",
-              ],
-            ],
-          ].map(([title, links], i) => (
-            <ul key={i}>
-              <li className="text-white text-sm font-bold uppercase tracking-wide mb-4">
-                {title}
-              </li>
-              {(links as string[]).map((link, idx) => (
-                <li key={idx} className="mb-2">
-                  <a href="#" className="hover:text-blue-500 transition">
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ))}
-        </div>
-      </footer> */}
     </main>
   );
 }

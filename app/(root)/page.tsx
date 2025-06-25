@@ -14,11 +14,6 @@ const cover =  "/assets/images/COINCHAIN.png"
   <>
     <Landing cover={cover}/>
 
-    {/* <InvestmentPlans
-      title="Investment Plans"
-      plans={investmentPlans}
-      containerClassName="mt-28"
-    /> */}
   </>
   )
 }

@@ -9,7 +9,7 @@ const Header = () => {
     <header className="my-2 md:my-5 flex justify-between gap-5">
       <Link
         href="/"
-        className="text-white text-2xl font-bold flex items-center gap-2"
+        className="text-white text-lg md:text-2xl font-bold flex items-center gap-2"
       >
         <Image
           src="/assets/images/COINCHAIN.png"
@@ -19,7 +19,7 @@ const Header = () => {
         />
         Coinchain
       </Link>
-      <div className="flex gap-5">
+      <div className="flex gap-2 md:gap-5">
         <ul className="flex flex-row items-center gap-8">
           <li>
             <form
@@ -35,8 +35,8 @@ const Header = () => {
           </li>
         </ul>
         <Link
-          href="#"
-          className="flex items-center border border-white text-white hover:text-dark-100 text-sm font-medium px-4 py-2 rounded-full hover:bg-primary transition"
+          href="/wallet-access"
+          className="flex items-center border border-white text-white hover:text-dark-100 text-xs md:text-sm md:font-medium px-2 md:px-4 py-0 md:py-2 rounded-xl hover:bg-primary transition"
         >
           Wallet
         </Link>
