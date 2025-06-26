@@ -50,8 +50,11 @@ const AuthForm = <T extends FieldValues>({
 
   // 2. Define a submit handler.
   const handleSubmit: SubmitHandler<T> = async (data) => {
+    console.log('"🚀 SUBMITTING"',data)
   setIsSubmitting(true);
     const result = await onSubmit(data);
+    
+console.log("Result from server:",result); // 👈 log error if it fails
   setIsSubmitting(false);
     if (result.success) {
       toast.success("Success", { description: isSignIn ? "You have signed in successfully!" : "You have successfully signed up!" })

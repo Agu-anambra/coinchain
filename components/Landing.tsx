@@ -26,7 +26,7 @@ export default function HomePage({ cover }: { cover: string }) {
             exchange.
           </p>
           <Button className="relative capitalize text-white font-bold py-3 px-8 rounded-full overflow-hidden z-10 inline-block group book-overview_btn">
-            <Link href="/wallet-access" className="relative z-10">
+            <Link href="/dashboard" className="relative z-10">
             Get started now
             </Link>
             <span className="absolute inset-0 z-[-1] bg-gradient-to-r from-white/10 via-white/50 to-transparent translate-x-[-100%] group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-transform duration-500"></span>

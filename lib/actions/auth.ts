@@ -63,12 +63,24 @@ export const signUp = async (params: AuthCredentials) => {
             IDCard,
         });
 
-        await workflowClient.trigger({
-            url: `${config.env.prodApiEndPoint}/api/workflows/onboarding`, body: {
-                email,
-                fullName,
-            }
-        });
+        // await workflowClient.trigger({
+        //     url: `${config.env.prodApiEndPoint}/api/workflows/onboarding`, body: {
+        //         email,
+        //         fullName,
+        //     }
+        // });
+        try {
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndPoint}/api/workflows/onboarding`,
+      body: {
+        email,
+        fullName,
+      },
+    });
+  } catch (workflowErr) {
+    console.error("Workflow trigger failed:", workflowErr);
+    // optional: continue even if this fails
+  }
         await signInWithCredentials({ email, password });
 
         return { success: true, message: 'User created successfully' };

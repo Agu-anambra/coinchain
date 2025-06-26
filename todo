@@ -1,0 +1,21 @@
+ Next Steps You Can Add Later:
+
+ 
+ POST /api/deposit and /api/withdraw handlers
+Deposit & Withdraw Forms to hit:
+
+POST /api/deposit
+
+POST /api/withdraw
+
+Admin dashboard to:
+
+View requests from withdraw_requests
+
+Approve & update user balances accordingly
+
+Toasts/Modals for user feedback
+
+The form and backend logic for submitting deposits/withdrawals?
+
+An admin view to approve requests?
