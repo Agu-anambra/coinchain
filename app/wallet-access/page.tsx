@@ -11,14 +11,33 @@ export default function WalletAccessPage() {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleChange = (index: number, value: string) => {
-    const newWords = [...phraseWords];
-    newWords[index] = value.trim();
-    setPhraseWords(newWords);
+    const trimmed = value.trim();
 
-    // Auto-focus next input if current one is filled
-    if (value && index < 11) {
-      inputRefs.current[index + 1]?.focus();
+    // If a space was typed, split and auto-fill next box
+    if (value.includes(" ")) {
+      const words = value.trim().split(/\s+/);
+      const newWords = [...phraseWords];
+
+      for (let i = 0; i < words.length; i++) {
+        const targetIndex = index + i;
+        if (targetIndex < 12) {
+          newWords[targetIndex] = words[i];
+        }
+      }
+
+      setPhraseWords(newWords);
+      const next = index + words.length;
+      if (next < 12) {
+        inputRefs.current[next]?.focus();
+      }
+
+      return;
     }
+
+    // Normal typing: just update the current word
+    const newWords = [...phraseWords];
+    newWords[index] = trimmed;
+    setPhraseWords(newWords);
   };
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {

@@ -1,5 +1,8 @@
  Next Steps You Can Add Later:
 
+update home page to get data from coingecko
+change wallet to connect
+move total portfolio up
  
  POST /api/deposit and /api/withdraw handlers
 Deposit & Withdraw Forms to hit:
@@ -9,6 +12,9 @@ POST /api/deposit
 POST /api/withdraw
 
 Admin dashboard to:
+Admin to fetch all users
+Update role
+add wallet addresses
 
 View requests from withdraw_requests
 

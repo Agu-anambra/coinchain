@@ -3,7 +3,14 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-export default function HeadlessModal({ children, onClose }) {
+import { ReactNode } from "react";
+
+type HeadlessModalProps = {
+  children: ReactNode;
+  onClose: () => void;
+};
+
+export default function HeadlessModal({ children, onClose }: HeadlessModalProps) {
   return (
     <Transition appear show as={Fragment}>
       <Dialog onClose={onClose} className="fixed inset-0 z-50 overflow-y-auto">

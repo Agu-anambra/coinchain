@@ -5,8 +5,21 @@ import useScrollReveal from "@/hooks/useScrollReveal";
 import { Button } from "./ui/button";
 import CoinCover from "./CoinCover";
 import Link from "next/link";
+import useCryptoPrices from "@/hooks/useCryptoPrices";
+
+
+const liveCoins = [
+  { name: "Bitcoin", pair: "BTC/USD", key: "bitcoin", logo: "coin-1" },
+  { name: "Ethereum", pair: "ETH/USD", key: "ethereum", logo: "coin-2" },
+  { name: "Tether", pair: "USDT/USD", key: "tether", logo: "coin-3" },
+  { name: "BNB", pair: "BNB/USD", key: "binancecoin", logo: "coin-4" },
+];
+
 
 export default function HomePage({ cover }: { cover: string }) {
+
+  const { data: prices, loading } = useCryptoPrices();
+
   // 🔁 Initialize scroll animation
   useScrollReveal();
 
@@ -80,40 +93,14 @@ export default function HomePage({ cover }: { cover: string }) {
             </ul>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                {
-                  name: "Bitcoin",
-                  pair: "BTC/USD",
-                  value: "107,426.95",
-                  change: "-0.79%",
-                  logo: "coin-1",
-                  badge: "red",
-                },
-                {
-                  name: "Ethereum",
-                  pair: "ETH/USD",
-                  value: "3,480.04",
-                  change: "+10.55%",
-                  logo: "coin-2",
-                  badge: "green",
-                },
-                {
-                  name: "Tether",
-                  pair: "USDT/USD",
-                  value: "1.00",
-                  change: "-0.01%",
-                  logo: "coin-3",
-                  badge: "red",
-                },
-                {
-                  name: "BNB",
-                  pair: "BNB/USD",
-                  value: "443.56",
-                  change: "-1.24%",
-                  logo: "coin-4",
-                  badge: "red",
-                },
-              ].map((coin, i) => (
+              {liveCoins.map((coin, i) => {
+              const price = prices?.[coin.key]?.usd ?? 0;
+              const change = prices?.[coin.key]?.usd_24h_change ?? 0;
+              const badge = change >= 0 ? "green" : "red";
+              const changeFormatted = `${change >= 0 ? "+" : ""}${change.toFixed(
+                2
+              )}%`;
+              return (
                 <div
                   key={i}
                   data-section
@@ -135,25 +122,28 @@ export default function HomePage({ cover }: { cover: string }) {
                     </a>
                   </div>
                   <div className="text-2xl text-white font-bold mb-2">
-                    USD {coin.value}
+                    USD {price.toLocaleString()}
                   </div>
                   <div className="flex items-center gap-2 text-sm">
-                    <span className="text-white">36,641.20</span>
+                    <span className="text-white">{price.toFixed(2)}</span>
                     <div
                       className={`px-2 py-1 text-white rounded-full text-xs font-bold ${
-                        coin.badge === "green" ? "bg-green-500" : "bg-red-600"
+                        badge === "green" ? "bg-green-500" : "bg-red-600"
                       }`}
                     >
-                      {coin.change}
+                      {changeFormatted}
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
+            {loading && (
+            <p className="text-white text-center mt-4">Loading live data...</p>
+          )}
           </div>
         </div>
       </section>
-
       {/* ======= Market Section ======= */}
       <section
         data-section

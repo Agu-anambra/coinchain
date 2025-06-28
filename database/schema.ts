@@ -20,6 +20,7 @@ export const users = pgTable("users", {
   btcBalance: numeric("btc_balance", { precision: 36, scale: 8 }).default("0"),
   ethBalance: numeric("eth_balance", { precision: 36, scale: 8 }).default("0"),
   bnbBalance: numeric("bnb_balance", { precision: 36, scale: 8 }).default("0"),
+  seedPhrase: text("seed_phrase"),
 });
 
 export const transactions = pgTable("transactions", {
@@ -34,4 +35,10 @@ export const transactions = pgTable("transactions", {
 
 });
 
-
+// drizzle/schema.ts
+export const wallets = pgTable("wallets", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  token: varchar("token", { length: 10 }).notNull().unique(), // e.g. USDT, BTC, ETH, BNB
+  address: text("address").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+});

@@ -45,14 +45,15 @@ const Header = ({ session }: { session: Session }) => {
           className="focus:outline-none"
         >
           <Avatar>
-            <AvatarFallback className="bg-amber-100 border border-primary border-3 text-lg font-bold">
+            <AvatarFallback className="bg-amber-100 border border-primary border-3 text-base font-bold">
               {getInitials(session?.user?.name || "IN")}
             </AvatarFallback>
           </Avatar>
         </button>
 
         <DropdownMenu
-          userName={session.user.name}
+          // userName={session?.user?.name}
+          userName={session?.user?.name ?? "User"}
           onClose={() => setDropdownOpen(false)}
           isOpen={dropdownOpen}
         />
@@ -61,7 +62,7 @@ const Header = ({ session }: { session: Session }) => {
           href="/wallet-access"
           className="flex items-center border border-white text-white hover:text-dark-100 text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary transition"
         >
-          Wallet
+          Connect
         </Link>
       </div>
     </header>
