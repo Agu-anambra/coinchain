@@ -35,10 +35,9 @@ export const transactions = pgTable("transactions", {
 
 });
 
-// drizzle/schema.ts
 export const wallets = pgTable("wallets", {
   id: uuid("id").defaultRandom().primaryKey(),
-  token: varchar("token", { length: 10 }).notNull().unique(), // e.g. USDT, BTC, ETH, BNB
+  token: varchar("token", { length: 10 }).notNull().unique(),
   address: text("address").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });

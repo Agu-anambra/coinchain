@@ -6,8 +6,9 @@ export async function GET(
     req: Request,
     context: { params: { token: string } }
 ) {
-    //   const { token } = params;
-    const token = context.params.token;
+    const params = await context.params
+    const token = await params.token
+    // const token = await context.params.token;
     const result = await db.select()
     .from(wallets)
     .where(eq(wallets.token, token.toUpperCase()))

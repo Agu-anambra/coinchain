@@ -12,10 +12,10 @@ export async function GET() {
   const user = await db
     .select({
       fullName: users.fullName,
-      usdt: users.usdtBalance,
-      btc: users.btcBalance,
-      eth: users.ethBalance,
-      bnb: users.bnbBalance,
+      usdtBalance: users.usdtBalance,
+      btcBalance: users.btcBalance,
+      ethBalance: users.ethBalance,
+      bnbBalance: users.bnbBalance,
     })
     .from(users)
     .where(eq(users.id, session.user.id))

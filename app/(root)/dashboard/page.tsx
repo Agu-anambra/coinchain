@@ -8,6 +8,7 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useWalletAddress } from "@/hooks/useWalletAddresses";
 import QRCode from "react-qr-code";
+import { toast } from "sonner";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -127,7 +128,7 @@ export default function Dashboard() {
             No portfolio data to display
           </p>
         ) : (
-          <Pie data={pieData} className="max-w-xs mx-auto" />
+          <Pie data={pieData} className="max-w-xs mx-auto text-white" />
         )}
         {/* <Pie data={pieData} className="max-w-xs mx-auto" /> */}
       </div>
@@ -186,13 +187,13 @@ export default function Dashboard() {
 
       <div className="flex space-x-4 mb-5">
         <button
-          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
+          className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition cursor-pointer"
           onClick={() => setOpenModal("deposit")}
         >
           Deposit
         </button>
         <button
-          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
+          className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition cursor-pointer"
           onClick={() => setOpenModal("withdraw")}
         >
           Withdraw
@@ -229,12 +230,14 @@ export default function Dashboard() {
                     <p className="text-sm text-gray-400 mb-1">
                       Send to address:
                     </p>
-                    <p className="bg-gray-800 text-white p-2 rounded break-all font-mono">
+                    <p className="text-black bg-pr/10 shadow-lg p-2 rounded break-all font-mono">
                       {address}
                     </p>
                     <button
-                      onClick={() => navigator.clipboard.writeText(address)}
-                      className="mt-2 px-3 py-1 bg-gray-600 hover:bg-gray-700 text-sm rounded"
+                      onClick={() => {
+                          navigator.clipboard.writeText(address)
+                        toast.success('address copied to clipboard')}}
+                      className="mt-2 px-3 py-1 bg-gray-600 hover:bg-gray-700 text-sm rounded cursor-pointer"
                     >
                       Copy Address
                     </button>
@@ -261,6 +264,8 @@ export default function Dashboard() {
                   body: JSON.stringify(Object.fromEntries(form)),
                   headers: { "Content-Type": "application/json" },
                 });
+                  toast.success('withdrawal request sent')
+                await load();
                 setOpenModal(null);
               }}
             >
@@ -286,7 +291,7 @@ export default function Dashboard() {
               />
               <button
                 type="submit"
-                className="w-full px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white transition"
+                className="w-full px-4 py-2 rounded bg-red-600 hover:bg-red-700 text-white transition cursor-pointer"
               >
                 Submit withdraw
               </button>

@@ -1,5 +1,5 @@
 // app/admin/users/page.tsx (Server Component)
-import UsersClient from '@/components/UsersClient';
+import UsersClient from '@/components/admin/UsersClient';
 import { db } from '@/database/drizzle';
 import { users } from '@/database/schema';
 
