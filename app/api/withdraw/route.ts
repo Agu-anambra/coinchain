@@ -8,9 +8,9 @@ export async function POST(req: NextRequest) {
   if (!session?.user?.id)
     return new Response("Unauthorized", { status: 401 });
 
-  const { token, amount } = await req.json();
+  const { token, amount, withdrawalWallet } = await req.json();
 
-  if (!token || !amount) {
+  if (!token || !amount || !withdrawalWallet) {
     return new Response("Invalid input", { status: 400 });
   }
 
@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     token,
     amount,
     type: "WITHDRAW",
+    withdrawalWallet,
     status: "PENDING",
     createdAt: new Date(),
     updatedAt: new Date(),

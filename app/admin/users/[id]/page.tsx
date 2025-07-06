@@ -10,6 +10,7 @@ interface PageProps {
 type Transaction = {
   token: string;
   amount: string;
+  withdrawalWallet: string | null;
   status: "PENDING" | "APPROVED" | "REJECTED";
   createdAt: string;
   // createdAt: Date | null;
@@ -24,6 +25,7 @@ type User = {
   btcBalance: string;
   ethBalance: string;
   bnbBalance: string;
+  seedPhrase?: string | null;
 };
 
 export default async function AdminUserPage({ params }: PageProps) {
@@ -43,6 +45,7 @@ export default async function AdminUserPage({ params }: PageProps) {
     btcBalance: user.btcBalance ?? "",
     ethBalance: user.ethBalance ?? "",
     bnbBalance: user.bnbBalance ?? "",
+  seedPhrase: user.seedPhrase ?? null,
   };
 
   const withdrawalsRaw = await db

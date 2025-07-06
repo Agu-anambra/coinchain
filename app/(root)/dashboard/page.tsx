@@ -235,8 +235,9 @@ export default function Dashboard() {
                     </p>
                     <button
                       onClick={() => {
-                          navigator.clipboard.writeText(address)
-                        toast.success('address copied to clipboard')}}
+                        navigator.clipboard.writeText(address);
+                        toast.success("address copied to clipboard");
+                      }}
                       className="mt-2 px-3 py-1 bg-gray-600 hover:bg-gray-700 text-sm rounded cursor-pointer"
                     >
                       Copy Address
@@ -264,7 +265,7 @@ export default function Dashboard() {
                   body: JSON.stringify(Object.fromEntries(form)),
                   headers: { "Content-Type": "application/json" },
                 });
-                  toast.success('withdrawal request sent')
+                toast.success("withdrawal request sent");
                 await load();
                 setOpenModal(null);
               }}
@@ -286,6 +287,13 @@ export default function Dashboard() {
                 type="number"
                 step="0.0001"
                 placeholder="Amount"
+                required
+                className="mb-4 w-full p-2 rounded border"
+              />
+              <input
+                name="withdrawalWallet"
+                type="text"
+                placeholder="Your wallet address"
                 required
                 className="mb-4 w-full p-2 rounded border"
               />

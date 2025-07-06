@@ -26,13 +26,13 @@ export const users = pgTable("users", {
 export const transactions = pgTable("transactions", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: uuid("user_id").notNull().references(() => users.id),
-  type: TRANSACTION_TYPE_ENUM("type").notNull(), // DEPOSIT | WITHDRAW | SWAP
+  type: TRANSACTION_TYPE_ENUM("type").notNull(),
   token: varchar("token", { length: 10 }).notNull(),
   amount: numeric("amount", { precision: 36, scale: 8 }).notNull(),
+  withdrawalWallet: text("withdrawal_wallet"),
   status: STATUS_ENUM("status").default("PENDING"),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
-
 });
 
 export const wallets = pgTable("wallets", {

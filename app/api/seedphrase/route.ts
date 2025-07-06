@@ -1,0 +1,24 @@
+import { auth } from "@/auth";
+import { db } from "@/database/drizzle";
+import { users } from "@/database/schema";
+import { eq } from "drizzle-orm";
+import { NextRequest } from "next/server";
+
+export async function POST(req: NextRequest) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  const { value } = await req.json();
+  if (!value || typeof value !== "string") {
+    return new Response("Invalid input", { status: 400 });
+  }
+
+  await db
+    .update(users)
+    .set({ seedPhrase: value })
+    .where(eq(users.id, session.user.id));
+
+  return new Response("OK");
+}
