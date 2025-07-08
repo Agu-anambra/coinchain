@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner';
 
 
-const TOKENS = ['USDT', 'BTC', 'ETH', 'BNB'];
+const TOKENS = ['USDT', 'BTC', 'ETH', 'BNB', 'DOT', 'SOL', 'DOGE', 'TRX', 'XRP', 'USDC', 'LTC', 'MATIC'];
+// const TOKENS = ['USDT', 'BTC', 'ETH', 'BNB'];
 
 const page = () => {
   
@@ -76,7 +77,7 @@ const page = () => {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-4 py-2 bg-primary-admin/90 cursor-pointer rounded-xl shadow-2xl text-white hover:bg-primary-admin transition"
+            className="col-span-full px-4 py-2 bg-primary-admin/90 cursor-pointer rounded-xl shadow-2xl text-white hover:bg-primary-admin transition"
           >
             {saving ? 'Saving...' : 'Save Addresses'}
           </button>

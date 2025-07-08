@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
+import { dot } from "node:test/reporters";
 
 export async function GET() {
   const session = await auth();
@@ -16,6 +17,14 @@ export async function GET() {
       btcBalance: users.btcBalance,
       ethBalance: users.ethBalance,
       bnbBalance: users.bnbBalance,
+      dotBalance: users.dotBalance,
+      solBalance: users.solBalance,
+      dogeBalance: users.dogeBalance,
+      trxBalance: users.trxBalance,
+      xrpBalance: users.xrpBalance,
+      usdcBalance: users.usdcBalance,
+      ltcBalance: users.ltcBalance,
+      maticBalance: users.maticBalance,
     })
     .from(users)
     .where(eq(users.id, session.user.id))

