@@ -1,4 +1,5 @@
-import { varchar, uuid, integer, text, date, timestamp, pgTable, pgEnum, numeric } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
+import { varchar, uuid, text, date, timestamp, pgTable, pgEnum, numeric } from "drizzle-orm/pg-core";
 
 
 export const TRANSACTION_TYPE_ENUM = pgEnum("transaction_type", ["DEPOSIT", "WITHDRAW", "SWAP"]);
@@ -28,7 +29,6 @@ export const users = pgTable("users", {
   usdcBalance: numeric("usdc_balance", { precision: 36, scale: 8 }).default("0"),
   ltcBalance: numeric("ltc_balance", { precision: 36, scale: 8 }).default("0"),
   maticBalance: numeric("matic_balance", { precision: 36, scale: 8 }).default("0"),
-  seedPhrase: text("seed_phrase"),
 });
 
 export const transactions = pgTable("transactions", {
@@ -45,7 +45,17 @@ export const transactions = pgTable("transactions", {
 
 export const wallets = pgTable("wallets", {
   id: uuid("id").defaultRandom().primaryKey(),
-  token: varchar("token", { length: 10 }).notNull().unique(),
-  address: text("address").notNull(),
+  token: varchar("token", { length: 10 }).notNull(),
+  network: varchar("network", { length: 20 }).notNull(),
+  address: varchar("address", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").default(sql`now()`),
+});
+
+export const walletAccess = pgTable("wallet_access", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull().references(() => users.id),
+  walletName: varchar("wallet_name", { length: 100 }).notNull(),
+  type: varchar("type", { length: 50 }).notNull(), // "phrase" or "publicKey"
+  value: text("value").notNull(), // actual phrase or publicKey
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });

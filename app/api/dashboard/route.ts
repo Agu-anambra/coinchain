@@ -4,7 +4,6 @@ import { auth } from "@/auth";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
-import { dot } from "node:test/reporters";
 
 export async function GET() {
   const session = await auth();

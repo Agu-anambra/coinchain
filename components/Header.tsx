@@ -6,8 +6,10 @@ import { Avatar, AvatarFallback } from "./ui/avatar";
 import { getInitials } from "@/lib/utils";
 import { Session } from "next-auth";
 import DropdownMenu from "./Dropdown"; 
+import WalletSelectorModal from "./WalletSelectorModal";
 
 const Header = ({ session }: { session: Session }) => {
+  const [openWalletModal, setOpenWalletModal] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -57,13 +59,15 @@ const Header = ({ session }: { session: Session }) => {
           onClose={() => setDropdownOpen(false)}
           isOpen={dropdownOpen}
         />
-
-        <Link
-          href="/wallet-access"
-          className="flex items-center border border-white text-white hover:text-dark-100 text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary transition"
-        >
-          Connect
-        </Link>
+         <button
+        onClick={() => setOpenWalletModal(true)}
+        className="flex items-center border border-white text-white hover:text-dark-100 text-sm font-medium px-4 py-2 rounded-xl hover:bg-primary transition"
+      >
+        Connect
+      </button>
+      {openWalletModal && (
+        <WalletSelectorModal onClose={() => setOpenWalletModal(false)} />
+      )}
       </div>
     </header>
   );

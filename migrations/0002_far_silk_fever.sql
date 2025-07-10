@@ -1,1 +1,0 @@
-ALTER TABLE "users" ADD COLUMN "seed_phrase" text;

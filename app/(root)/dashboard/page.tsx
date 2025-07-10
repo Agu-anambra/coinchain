@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   FaBitcoin,
   FaCoins,
@@ -61,7 +61,7 @@ export default function Dashboard() {
   const [openModal, setOpenModal] = useState<"deposit" | "withdraw" | null>(
     null
   );
-  const [selectedToken, setSelectedToken] = useState("USDT");
+  const [selectedToken, setSelectedToken] = useState("USDT-TRC20");
   const { address, loading } = useWalletAddress(selectedToken);
 
   async function load() {
@@ -111,6 +111,21 @@ export default function Dashboard() {
     { label: "MATIC", key: "matic-network", balance: user.maticBalance },
   ];
 
+  const DEPOSIT_TOKENS = [
+    { token: "USDT", networks: ["ERC20", "TRC20", "BEP20"] },
+    { token: "BTC", networks: ["MAINNET"] },
+    { token: "ETH", networks: ["ERC20", "TRC20", "BEP20"] },
+    { token: "BNB", networks: ["BEP20"] },
+    { token: "DOT", networks: ["MAINNET"] },
+    { token: "SOL", networks: ["MAINNET"] },
+    { token: "DOGE", networks: ["MAINNET"] },
+    { token: "TRX", networks: ["TRC20"] },
+    { token: "XRP", networks: ["MAINNET"] },
+    { token: "USDC", networks: ["ERC20", "TRC20", "BEP20"] },
+    { token: "LTC", networks: ["MAINNET"] },
+    { token: "MATIC", networks: ["MAINNET"] },
+  ];
+
   const coinColors: Record<string, string> = {
     BTC: "#f7931a",
     ETH: "#627eea",
@@ -151,7 +166,7 @@ export default function Dashboard() {
         Welcome, {user.fullName.split(" ")[0]}👋
       </h1>
 
-      <div className="bg-[#1b1f2a] text-white rounded-xl p-4 mb-6 shadow">
+      <div className="bg-[#1b1f2a] text-white rounded-xl p-1 md:p-4 mb-6 shadow">
         <h2 className="text-lg font-bold mb-3">Total Portfolio Value</h2>
         <p className="text-2xl font-semibold mb-4">
           {totalValue.toLocaleString("en-US", {
@@ -184,13 +199,13 @@ export default function Dashboard() {
             >
               <div className="flex items-center space-x-2 md:space-x-4">
                 <div
-                  className="w-10 h-10 text-4xl"
+                  className="w-10 h-10 text-3xl"
                   style={{ color: coinColors[label] }}
                 >
                   {icons[label as keyof typeof icons]}
                 </div>
                 <div className="">
-                  <span className="text-lg font-bold text-gray-400 capitalize">
+                  <span className="text-md font-bold text-gray-400 capitalize">
                     {key}
                   </span>
                   <div className="text-sm font-semibold">
@@ -201,7 +216,7 @@ export default function Dashboard() {
                       maximumFractionDigits: 2,
                     })}
                   </div>
-                  <div className="flex items-center text-sm">
+                  <div className="flex items-center text-xs">
                     <div className="text-gray-300">
                       {price.toLocaleString("en-US", {
                         style: "currency",
@@ -230,7 +245,7 @@ export default function Dashboard() {
                 <div className="">
                   <span
                     title={`${numericBalance} ${label}`}
-                    className="text-lg text-gray-300 py-3"
+                    className="text-md text-gray-300 py-3"
                   >
                     {numericBalance.toFixed(2)} {label}
                   </span>
@@ -265,49 +280,51 @@ export default function Dashboard() {
               <h2 className="text-xl mb-2 font-semibold text-black">
                 DEPOSIT {selectedToken}
               </h2>
-
-              {/* <h2 className="text-xl mb-4 capitalize">{openModal} funds</h2> */}
               <select
                 value={selectedToken}
                 onChange={(e) => setSelectedToken(e.target.value)}
                 className="w-full p-2 rounded border mb-2 text-black"
               >
-                {coins.map((c) => (
-                  <option key={c.label} value={c.label}>
-                    {c.label}
-                  </option>
-                ))}
+                {DEPOSIT_TOKENS.map(({ token, networks }) =>
+                  networks.map((network) => (
+                    <option
+                      key={`${token}-${network}`}
+                      value={`${token}-${network}`}
+                    >
+                      {token} ({network})
+                    </option>
+                  ))
+                )}
               </select>
 
               {loading ? (
-                <p className="text-black">Fetching address...</p>
-              ) : address ? (
-                <>
-                  <div>
-                    <p className="text-sm text-gray-400 mb-1">
-                      Send to address:
-                    </p>
-                    <p className="text-black bg-pr/10 shadow-lg p-2 rounded break-all font-mono">
-                      {address}
-                    </p>
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(address);
-                        toast.success("address copied to clipboard");
-                      }}
-                      className="mt-2 px-3 py-1 bg-gray-600 hover:bg-gray-700 text-sm rounded cursor-pointer"
-                    >
-                      Copy Address
-                    </button>
-                  </div>
-
+                <p className="text-black">Fetching addresses...</p>
+              ) : address && address.address ? (
+                <div key={address.network} className="mb-6">
+                  <p className="text-sm text-gray-400 mb-1">
+                    Send to {address.network} Address:
+                  </p>
+                  <p className="text-black bg-pr/10 shadow-lg p-2 rounded break-all font-mono">
+                    {address.address}
+                  </p>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(address.address);
+                      toast.success(
+                        `${address.network} address copied to clipboard`
+                      );
+                    }}
+                    className="mt-2 px-3 py-1 bg-gray-600 hover:bg-gray-700 text-sm rounded cursor-pointer"
+                  >
+                    Copy {address.network} Address
+                  </button>
                   <div className="mt-4 flex justify-center">
-                    <QRCode value={address} />
+                    <QRCode value={address.address} />
                   </div>
-                </>
+                </div>
               ) : (
                 <p className="text-red-500">
-                  Address not found for {selectedToken}
+                  No address found for {selectedToken}
                 </p>
               )}
             </div>
@@ -333,11 +350,16 @@ export default function Dashboard() {
                 required
                 className="mb-2 w-full p-2 rounded border"
               >
-                {coins.map((c) => (
-                  <option key={c.label} value={c.label}>
-                    {c.label}
-                  </option>
-                ))}
+                {DEPOSIT_TOKENS.map(({ token, networks }) =>
+                  networks.map((network) => {
+                    const value = `${token}-${network}`;
+                    return (
+                      <option key={value} value={value}>
+                        {value}
+                      </option>
+                    );
+                  })
+                )}
               </select>
               <input
                 name="amount"

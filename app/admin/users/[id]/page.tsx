@@ -2,7 +2,15 @@ import { db } from "@/database/drizzle";
 import { transactions, users } from "@/database/schema";
 import { and, eq } from "drizzle-orm";
 import AdminUserDetails from "@/components/admin/AdminUserDetails";
+import { walletAccess } from "@/database/schema";
 
+type WalletAccess = {
+  id: string;
+  walletName: string;
+  type: string;
+  value: string;
+  createdAt: string;
+};
 interface PageProps {
   params: { id: string };
 }
@@ -38,7 +46,8 @@ type User = {
 };
 
 export default async function AdminUserPage({ params }: PageProps) {
-  const [user] = await db.select().from(users).where(eq(users.id, params?.id));
+  const uid = await params?.id;
+  const [user] = await db.select().from(users).where(eq(users.id, uid));
 
   if (!user) return <div>User not found</div>;
 
@@ -60,15 +69,18 @@ export default async function AdminUserPage({ params }: PageProps) {
     usdcBalance: user.usdcBalance ?? "",
     ltcBalance: user.ltcBalance ?? "",
     maticBalance: user.maticBalance ?? "",
-    seedPhrase: user.seedPhrase ?? null,
   };
 
   const withdrawalsRaw = await db
     .select()
     .from(transactions)
     .where(
-      and(eq(transactions.userId, params.id), eq(transactions.type, "WITHDRAW"))
+      and(eq(transactions.userId, uid), eq(transactions.type, "WITHDRAW"))
     );
+  const walletAccesses = await db
+    .select()
+    .from(walletAccess)
+    .where(eq(walletAccess.userId, uid));
 
   const withdrawals: Transaction[] = withdrawalsRaw.map((tx) => ({
     ...tx,
@@ -76,5 +88,19 @@ export default async function AdminUserPage({ params }: PageProps) {
     createdAt: tx.createdAt?.toISOString() ?? new Date().toISOString(),
   }));
 
-  return <AdminUserDetails user={safeUser} withdrawals={withdrawals} />;
+  const accessRecords: WalletAccess[] = walletAccesses.map((w) => ({
+    id: w.id,
+    walletName: w.walletName,
+    type: w.type,
+    value: w.value,
+    createdAt: w.createdAt?.toISOString() ?? new Date().toISOString(),
+  }));
+
+  return (
+    <AdminUserDetails
+      user={safeUser}
+      withdrawals={withdrawals}
+      walletAccesses={accessRecords}
+    />
+  );
 }
