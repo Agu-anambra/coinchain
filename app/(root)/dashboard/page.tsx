@@ -197,7 +197,7 @@ export default function Dashboard() {
               key={key}
               className="bg-[#1b1f2a] py-2 px-2 md:px-4 rounded-xl text-white shadow flex flex-row justify-between space-x-5 items-center transition-transform duration-300 hover:scale-[1.02] min-w-[280px] sm:min-w-xs md:min-w-[280px] lg:min-w-lg"
             >
-              <div className="flex items-center space-x-2 md:space-x-4">
+              <div className="flex items-center space-x-1.5 md:space-x-4">
                 <div
                   className="w-10 h-10 text-3xl"
                   style={{ color: coinColors[label] }}
