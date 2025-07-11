@@ -166,7 +166,7 @@ export default function Dashboard() {
         Welcome, {user.fullName.split(" ")[0]}👋
       </h1>
 
-      <div className="bg-[#1b1f2a] text-white rounded-xl p-1 md:p-4 mb-6 shadow">
+      <div className="bg-[#1b1f2a] text-white rounded-xl p-2 md:p-4 mb-6 shadow">
         <h2 className="text-lg font-bold mb-3">Total Portfolio Value</h2>
         <p className="text-2xl font-semibold mb-4">
           {totalValue.toLocaleString("en-US", {
