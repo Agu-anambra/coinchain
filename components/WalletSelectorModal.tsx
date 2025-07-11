@@ -19,7 +19,6 @@ const WALLETS = [
   { name: "OKX Wallet", icon: okx },
 ];
 
-
 export default function WalletSelectorModal({
   onClose,
 }: {
@@ -27,18 +26,23 @@ export default function WalletSelectorModal({
 }) {
   const [selectedWallet, setSelectedWallet] = useState<string | null>(null);
 
-const handleWalletSelect = (wallet: string) => {
-  setSelectedWallet(wallet);
-  // maybe open the next modal step or close this one
-};
-
+  const handleWalletSelect = (wallet: string) => {
+    setSelectedWallet(wallet);
+    // maybe open the next modal step or close this one
+  };
 
   if (selectedWallet)
     return <WalletAccessModal walletName={selectedWallet} onClose={onClose} />;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-xl w-100 space-y-4">
+    <div
+      className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white p-6 rounded-xl w-100 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h2 className="text-xl font-bold text-center text-black">
           Choose Wallet
         </h2>

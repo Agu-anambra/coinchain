@@ -17,7 +17,7 @@ export default function WalletAccessModal({
 
   const handleChange = (index: number, value: string) => {
     const trimmed = value.trim();
-  const totalWords = phraseWords.length;
+    const totalWords = phraseWords.length;
 
     // If a space was typed, split and auto-fill next box
     if (value.includes(" ")) {
@@ -95,8 +95,14 @@ export default function WalletAccessModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-      <div className="max-w-md w-full bg-gray-800 p-6 rounded-2xl shadow-lg space-y-6">
+    <div
+      className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="max-w-md w-full bg-gray-800 p-6 rounded-2xl shadow-lg space-y-6"
+        onClick={(e) => e.stopPropagation()}
+      >
         <h1 className="text-md lg:text-2xl font-bold text-center text-primary">
           {walletName}
         </h1>

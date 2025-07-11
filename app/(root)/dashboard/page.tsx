@@ -97,31 +97,31 @@ export default function Dashboard() {
     return <p className="text-center mt-10 text-white">Loading...</p>;
 
   const coins = [
-    { label: "USDT", key: "tether", balance: user.usdtBalance },
     { label: "BTC", key: "bitcoin", balance: user.btcBalance },
     { label: "ETH", key: "ethereum", balance: user.ethBalance },
     { label: "BNB", key: "binancecoin", balance: user.bnbBalance },
+    { label: "USDT", key: "tether", balance: user.usdtBalance },
+    { label: "TRX", key: "tron", balance: user.trxBalance },
+    { label: "USDC", key: "usd-coin", balance: user.usdcBalance },
     { label: "DOT", key: "polkadot", balance: user.dotBalance },
     { label: "SOL", key: "solana", balance: user.solBalance },
     { label: "DOGE", key: "dogecoin", balance: user.dogeBalance },
-    { label: "TRX", key: "tron", balance: user.trxBalance },
     { label: "XRP", key: "ripple", balance: user.xrpBalance },
-    { label: "USDC", key: "usd-coin", balance: user.usdcBalance },
     { label: "LTC", key: "litecoin", balance: user.ltcBalance },
     { label: "MATIC", key: "matic-network", balance: user.maticBalance },
   ];
 
   const DEPOSIT_TOKENS = [
-    { token: "USDT", networks: ["ERC20", "TRC20", "BEP20"] },
     { token: "BTC", networks: ["MAINNET"] },
     { token: "ETH", networks: ["ERC20", "TRC20", "BEP20"] },
     { token: "BNB", networks: ["BEP20"] },
+    { token: "USDT", networks: ["ERC20", "TRC20", "BEP20"] },
+    { token: "USDC", networks: ["ERC20", "TRC20", "BEP20"] },
+    { token: "TRX", networks: ["TRC20"] },
     { token: "DOT", networks: ["MAINNET"] },
     { token: "SOL", networks: ["MAINNET"] },
     { token: "DOGE", networks: ["MAINNET"] },
-    { token: "TRX", networks: ["TRC20"] },
     { token: "XRP", networks: ["MAINNET"] },
-    { token: "USDC", networks: ["ERC20", "TRC20", "BEP20"] },
     { token: "LTC", networks: ["MAINNET"] },
     { token: "MATIC", networks: ["MAINNET"] },
   ];
