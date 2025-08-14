@@ -2,8 +2,8 @@ import Image from "next/image";
 import React from "react";
 
 const Footer = () => {
-  const phoneNumber = "2348012345678"; // Your number in international format
-  const message = "Hello! I’m interested in your services."; // Optional
+  const phoneNumber = "447349556804";
+  const message = "Hello! I’m interested in your services.";
   const encodedMessage = encodeURIComponent(message);
   return (
     <footer

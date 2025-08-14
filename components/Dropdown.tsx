@@ -29,6 +29,13 @@ export default function DropdownMenu({ userName, onClose, isOpen }: Props) {
           >
             Dashboard
           </Link>
+          <Link
+            href="/transactions"
+            className="block px-4 py-2 hover:bg-primary/80 font-bold"
+            onClick={onClose}
+          >
+            Transactions
+          </Link>
           <button
             onClick={() => {
               onClose();

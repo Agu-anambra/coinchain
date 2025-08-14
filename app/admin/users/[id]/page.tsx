@@ -3,6 +3,7 @@ import { transactions, users } from "@/database/schema";
 import { and, eq } from "drizzle-orm";
 import AdminUserDetails from "@/components/admin/AdminUserDetails";
 import { walletAccess } from "@/database/schema";
+import AdminUserPageClient from "./AdminUserPageClient";
 
 type WalletAccess = {
   id: string;
@@ -16,12 +17,12 @@ interface PageProps {
 }
 
 type Transaction = {
+  id: string;
   token: string;
   amount: string;
   withdrawalWallet: string | null;
-  status: "PENDING" | "APPROVED" | "REJECTED";
+  status: "PENDING" | "APPROVED" | "REJECTED"| "FAILED";
   createdAt: string;
-  // createdAt: Date | null;
 };
 
 type User = {
@@ -87,7 +88,7 @@ export default async function AdminUserPage({ params }: PageProps) {
     status: tx.status ?? "PENDING",
     createdAt: tx.createdAt?.toISOString() ?? new Date().toISOString(),
   }));
-
+  
   const accessRecords: WalletAccess[] = walletAccesses.map((w) => ({
     id: w.id,
     walletName: w.walletName,
@@ -97,7 +98,7 @@ export default async function AdminUserPage({ params }: PageProps) {
   }));
 
   return (
-    <AdminUserDetails
+    <AdminUserPageClient
       user={safeUser}
       withdrawals={withdrawals}
       walletAccesses={accessRecords}

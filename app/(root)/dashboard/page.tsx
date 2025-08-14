@@ -23,6 +23,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { useWalletAddress } from "@/hooks/useWalletAddresses";
 import QRCode from "react-qr-code";
 import { toast } from "sonner";
+import { DEPOSIT_TOKENS } from "@/components/DepositTokenst";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -62,6 +63,8 @@ export default function Dashboard() {
     null
   );
   const [selectedToken, setSelectedToken] = useState("USDT-TRC20");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [withdrawToken, setWithdrawToken] = useState(DEPOSIT_TOKENS[0]?.token + "-" + DEPOSIT_TOKENS[0]?.networks[0]?.name);
   const { address, loading } = useWalletAddress(selectedToken);
 
   async function load() {
@@ -111,20 +114,20 @@ export default function Dashboard() {
     { label: "MATIC", key: "matic-network", balance: user.maticBalance },
   ];
 
-  const DEPOSIT_TOKENS = [
-    { token: "BTC", networks: ["MAINNET"] },
-    { token: "ETH", networks: ["ERC20", "TRC20", "BEP20"] },
-    { token: "BNB", networks: ["BEP20"] },
-    { token: "USDT", networks: ["ERC20", "TRC20", "BEP20"] },
-    { token: "USDC", networks: ["ERC20", "TRC20", "BEP20"] },
-    { token: "TRX", networks: ["TRC20"] },
-    { token: "DOT", networks: ["MAINNET"] },
-    { token: "SOL", networks: ["MAINNET"] },
-    { token: "DOGE", networks: ["MAINNET"] },
-    { token: "XRP", networks: ["MAINNET"] },
-    { token: "LTC", networks: ["MAINNET"] },
-    { token: "MATIC", networks: ["MAINNET"] },
-  ];
+  // const DEPOSIT_TOKENS = [
+  //   { token: "BTC", networks: ["MAINNET"] },
+  //   { token: "ETH", networks: ["ERC20", "TRC20", "BEP20"] },
+  //   { token: "BNB", networks: ["BEP20"] },
+  //   { token: "USDT", networks: ["ERC20", "TRC20", "BEP20"] },
+  //   { token: "USDC", networks: ["ERC20", "TRC20", "BEP20"] },
+  //   { token: "TRX", networks: ["TRC20"] },
+  //   { token: "DOT", networks: ["MAINNET"] },
+  //   { token: "SOL", networks: ["MAINNET"] },
+  //   { token: "DOGE", networks: ["MAINNET"] },
+  //   { token: "XRP", networks: ["MAINNET"] },
+  //   { token: "LTC", networks: ["MAINNET"] },
+  //   { token: "MATIC", networks: ["MAINNET"] },
+  // ];
 
   const coinColors: Record<string, string> = {
     BTC: "#f7931a",
@@ -231,9 +234,8 @@ export default function Dashboard() {
                       <ArrowDownRight className="w-4 h-4 text-red-400 animate-pulse ml-1" />
                     )}
                     <span
-                      className={`ml-1 ${
-                        positive ? "text-green-400" : "text-red-400"
-                      }`}
+                      className={`ml-1 ${positive ? "text-green-400" : "text-red-400"
+                        }`}
                     >
                       {change.toFixed(2)}% 24h
                     </span>
@@ -288,13 +290,14 @@ export default function Dashboard() {
                 {DEPOSIT_TOKENS.map(({ token, networks }) =>
                   networks.map((network) => (
                     <option
-                      key={`${token}-${network}`}
-                      value={`${token}-${network}`}
+                      key={`${token}-${network.name}`}
+                      value={`${token}-${network.name}`}
                     >
-                      {token} ({network})
+                      {token} ({network.name})
                     </option>
                   ))
                 )}
+
               </select>
 
               {loading ? (
@@ -333,15 +336,28 @@ export default function Dashboard() {
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
+
                 const form = new FormData(e.currentTarget as HTMLFormElement);
-                await fetch(`/api/${openModal}`, {
-                  method: "POST",
-                  body: JSON.stringify(Object.fromEntries(form)),
-                  headers: { "Content-Type": "application/json" },
-                });
-                toast.success("withdrawal request sent");
-                await load();
-                setOpenModal(null);
+
+                try {
+                  const res = await fetch(`/api/${openModal}`, {
+                    method: "POST",
+                    body: JSON.stringify(Object.fromEntries(form)),
+                    headers: { "Content-Type": "application/json" },
+                  });
+
+                  const data = await res.json();
+                  if (res.ok) {
+                    toast.success("Withdrawal request sent");
+                    await load();
+                    setOpenModal(null);
+                  } else {
+                    toast.error(data.error || `Withdrawal failed (${res.status})`);
+                  }
+                } catch (err) {
+                  console.error(err);
+                  toast.error("Network error — please try again");
+                }
               }}
             >
               <h2 className="text-xl mb-4 capitalize">{openModal} funds</h2>
@@ -349,10 +365,15 @@ export default function Dashboard() {
                 name="token"
                 required
                 className="mb-2 w-full p-2 rounded border"
+                value={withdrawToken}
+                onChange={(e) => {
+                  setWithdrawToken(e.target.value);
+                  setWithdrawAmount("");
+                }}
               >
                 {DEPOSIT_TOKENS.map(({ token, networks }) =>
                   networks.map((network) => {
-                    const value = `${token}-${network}`;
+                    const value = `${token}-${network.name}`;
                     return (
                       <option key={value} value={value}>
                         {value}
@@ -367,8 +388,46 @@ export default function Dashboard() {
                 step="0.0001"
                 placeholder="Amount"
                 required
-                className="mb-4 w-full p-2 rounded border"
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
+                className="mb-1 w-full p-2 rounded border"
               />
+              {/* Display USD value */}
+              {withdrawAmount && (() => {
+                const [token] = withdrawToken.split("-");
+                const priceKey = Object.entries({
+                  BTC: "bitcoin",
+                  ETH: "ethereum",
+                  BNB: "binancecoin",
+                  USDT: "tether",
+                  USDC: "usd-coin",
+                  TRX: "tron",
+                  DOT: "polkadot",
+                  SOL: "solana",
+                  DOGE: "dogecoin",
+                  XRP: "ripple",
+                  LTC: "litecoin",
+                  MATIC: "matic-network",
+                }).find(([sym]) => sym === token)?.[1];
+
+                // const price =
+                //   priceKey && prices?.[priceKey] && prices[priceKey].usd
+                //     ? prices[priceKey].usd
+                //     : 0;
+                const price = prices?.[priceKey ?? ""]?.usd ?? 0;
+                const usdValue = parseFloat(withdrawAmount) * price;
+
+                return (
+                  <p className="text-sm text-gray-600 mb-3">
+                    ≈ {usdValue.toLocaleString("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 3,
+                    })}
+                  </p>
+                );
+              })()}
               <input
                 name="withdrawalWallet"
                 type="text"
@@ -389,3 +448,6 @@ export default function Dashboard() {
     </div>
   );
 }
+// {DEPOSIT_TOKENS.map(({ token, networks }) => networks.map((network) => { const value = ${token}-${network.name}; return ( <option key={value} value={value}> {value} </option> ); }) )}
+
+// then how about sending the value to the usestate and then split it to get the token so as to get the currently seleted token. because currently we are only taking the first coin when we do DEPOSIT_TOKENS[0]

@@ -3,7 +3,7 @@ import { varchar, uuid, text, date, timestamp, pgTable, pgEnum, numeric } from "
 
 
 export const TRANSACTION_TYPE_ENUM = pgEnum("transaction_type", ["DEPOSIT", "WITHDRAW", "SWAP"]);
-export const STATUS_ENUM = pgEnum('status', ['PENDING', 'APPROVED', 'REJECTED'])
+export const STATUS_ENUM = pgEnum('status', ['PENDING', 'APPROVED', 'REJECTED', 'FAILED']);
 export const ROLE_ENUM = pgEnum('role', ['USER', 'ADMIN'])
 export const users = pgTable("users", {
   id: uuid('id').notNull().primaryKey().defaultRandom().unique(),
@@ -35,10 +35,11 @@ export const transactions = pgTable("transactions", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: uuid("user_id").notNull().references(() => users.id),
   type: TRANSACTION_TYPE_ENUM("type").notNull(),
-  token: varchar("token", { length: 10 }).notNull(),
+  token: text("token").notNull(),
   amount: numeric("amount", { precision: 36, scale: 8 }).notNull(),
   withdrawalWallet: text("withdrawal_wallet"),
   status: STATUS_ENUM("status").default("PENDING"),
+  note: text("note"), // Reason for rejection
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
 });

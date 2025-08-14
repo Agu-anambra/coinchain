@@ -47,7 +47,7 @@ const Header = ({ session }: { session: Session }) => {
           className="focus:outline-none"
         >
           <Avatar>
-            <AvatarFallback className="bg-amber-100 border border-primary border-3 text-base font-bold">
+            <AvatarFallback className="bg-amber-100 border border-primary border-3 text-base font-bold cursor-pointer">
               {getInitials(session?.user?.name || "IN")}
             </AvatarFallback>
           </Avatar>

