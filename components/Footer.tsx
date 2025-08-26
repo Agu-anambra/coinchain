@@ -66,7 +66,7 @@ const Footer = () => {
           [
             "Support",
             [
-              "Bybit Learn",
+              "Coinchain Learn",
               "Help Center",
               "User Feedback",
               "Submit a request",
@@ -77,7 +77,7 @@ const Footer = () => {
           [
             "About Us",
             [
-              "About Bybit",
+              "About Coinchain",
               "Authenticity Check",
               "Careers",
               "Business Contacts",
