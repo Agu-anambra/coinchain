@@ -41,7 +41,7 @@ const withdrawalWallet = b.withdrawalWallet;
 
     // const gasFee = amount * 0.01;
     if (nativeBalance === 0) {
-      return await recordFailure(session.user.id, `Insufficient ${native} gas fee`, 400, { token, amount, withdrawalWallet });
+      return await recordFailure(session.user.id, `Insufficient ${native} gas fee`, 400, { token:`${token}-${network}`, amount, withdrawalWallet });
     }
 
     // ✅ Passed all checks — mark PENDING
