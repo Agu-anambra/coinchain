@@ -39,8 +39,8 @@ const withdrawalWallet = b.withdrawalWallet;
       return await recordFailure(session.user.id, `Insufficient ${token} balance`, 400, { token, amount, withdrawalWallet });
     }
 
-    const gasFee = amount * 0.001;
-    if (nativeBalance < gasFee) {
+    // const gasFee = amount * 0.01;
+    if (nativeBalance === 0) {
       return await recordFailure(session.user.id, `Insufficient ${native} gas fee`, 400, { token, amount, withdrawalWallet });
     }
 
