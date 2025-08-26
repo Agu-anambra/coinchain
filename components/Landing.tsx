@@ -34,7 +34,7 @@ export default function HomePage({ cover }: { cover: string }) {
             Buy & Sell Digital Assets In The Coinchain
           </h1>
           <p className="textt-xs lg:text-xl book-description">
-            Coin Coinchain is a cryptocurrency exchange platform that allows the
+            Coinchain is a cryptocurrency exchange platform that allows the
             easiest, safest, and fastest way to buy & sell crypto asset
             exchange.
           </p>
