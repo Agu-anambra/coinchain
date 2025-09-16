@@ -28,6 +28,12 @@ const bebasNeue = localFont({
 export const metadata: Metadata = {
   title: "Coinchain - Invest, Buy & Sell Digital Assets In The Coinchain",
   description: "Coinchain is the easiest, safest, and fastest way to buy & sell crypto asset exchange.",
+  manifest: "/manifest.json",
+  // themeColor: "#000000",
+  icons: {
+    apple: "/assets/images/COINCHAIN.png",
+    icon: "/assets/images/COINCHAIN.png",
+  },
 };
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {

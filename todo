@@ -1,0 +1,47 @@
+4. Transactions Page for Users
+New /transactions route with filter UI:
+
+Filter by status (FAILED, PENDING, APPROVED, REJECTED)
+
+Filter by token
+
+Sort by date
+
+Example query:
+
+ts
+Copy
+Edit
+await db.select().from(transactions)
+  .where(eq(transactions.userId, session.user.id));
+5. Admin Panel Updates
+Add an "Action" column in withdrawals table:
+
+Approve (green button)
+
+Reject (red button + reason modal)
+
+Calls the /api/admin/withdraw endpoint above.
+
+6. Frontend Dashboard Changes
+When calling /api/withdraw, if status is 400 and {error: "...reason..."}, show a toast:
+
+ts
+Copy
+Edit
+const res = await fetch(`/api/withdraw`, {...});
+if (!res.ok) {
+  const data = await res.json();
+  toast.error(data.error || "Withdrawal failed");
+} else {
+  toast.success("Withdrawal request sent");
+}
+If you want, I can now:
+
+Write the full frontend Transactions page
+
+Write the admin approve/reject UI
+
+Wire this into your current dashboard so everything works together.
+
+Do you want me to go ahead and build those UI parts now?
