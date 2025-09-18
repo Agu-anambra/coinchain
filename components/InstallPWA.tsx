@@ -84,7 +84,7 @@ export default function InstallPWA() {
             aria-label="Install this app"
             style={{ maxWidth: '220px' }}
             // className="px-4 py-1 bg-primary text-white text-xs"
-          className="w-auto px-4 py-1 bg-primary/60 text-white shadow-md font-semibold transition hover:bg-primary/90 text-right cursor-pointer"
+          className="w-auto px-4 py-1 bg-primary/60 text-white shadow-md font-semibold transition hover:bg-primary/90 text-right cursor-pointer text-xs"
           >
             Install App
           </button>
