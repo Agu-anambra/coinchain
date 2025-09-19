@@ -7,6 +7,19 @@ import Header from "@/components/admin/Header";
 import { db } from "@/database/drizzle";
 import { eq } from "drizzle-orm";
 import { users } from "@/database/schema";
+import { Metadata } from "next";
+import InstallAdminPWA from "@/components/InstallAdminPWA";
+
+export const metadata: Metadata = {
+  title: "Coinchain Admin Dashboard",
+  description: "Admin management for Coinchain platform",
+  manifest: "/manifest.admin.json",
+  icons: {
+    apple: "/assets/images/COINCHAIN.png",
+    icon: "/assets/images/COINCHAIN.png",
+  },
+};
+
 
 const layout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
@@ -24,6 +37,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
       <Sidebar session={session} />
       <div className="admin-container">
         <Header session={session} />
+        <InstallAdminPWA /> 
         {children}
       </div>
     </main>
