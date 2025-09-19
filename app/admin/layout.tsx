@@ -36,8 +36,8 @@ const layout = async ({ children }: { children: ReactNode }) => {
     <main className="flex flex-row min-h-screen w-full">
       <Sidebar session={session} />
       <div className="admin-container">
+        {/* <InstallAdminPWA />  */}
         <Header session={session} />
-        <InstallAdminPWA /> 
         {children}
       </div>
     </main>
