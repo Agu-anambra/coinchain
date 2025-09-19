@@ -78,13 +78,13 @@ export default function InstallPWA() {
     <>
       {/* ANDROID / CHROME */}
       {deferredPrompt && (
-        <div className="w-full flex justify-end bg-primary-admin">
+        <div className="w-full flex justify-end bg-primary-admin/70">
           <button
             onClick={installApp}
             aria-label="Install this app"
             style={{ maxWidth: '220px' }}
             // className="px-4 py-1 bg-primary text-white text-xs"
-            className="w-auto px-4 py-1 bg-primary-admin/60 text-white shadow-md font-semibold transition hover:bg-primary-admin/90 text-right cursor-pointer text-xs"
+            className="w-auto px-4 py-1 bg-primary-admin/40 text-white shadow-md font-semibold transition hover:bg-primary-admin/10 text-right cursor-pointer text-xs"
           >
             Install App
           </button>
