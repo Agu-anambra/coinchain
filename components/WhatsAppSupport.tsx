@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 export default function WhatsAppSupport() {
     
-  const phoneNumber = "447349556804";
+  const phoneNumber = "447587410841";
   const message = "Hello! I have some enquiries to make.";
   const encodedMessage = encodeURIComponent(message);
 
